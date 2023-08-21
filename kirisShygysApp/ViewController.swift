@@ -8,13 +8,15 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
     func addTwoNumbers(a: Int, b: Int) -> Int{
         return a + b
     }
+    //MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
         view.backgroundColor = .blue
     }
 
