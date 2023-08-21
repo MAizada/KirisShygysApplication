@@ -8,7 +8,10 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    func addTwoNumbers(a: Int, b: Int) -> Int{
+        return a + b
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
