@@ -37,6 +37,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		267E26D62A9D307100279F98 /* AppResources */ = {
+			isa = PBXGroup;
+			children = (
+				D884DC1D2A90ED8700B7D89A /* Info.plist */,
+				D884DC182A90ED8700B7D89A /* Assets.xcassets */,
+			);
+			path = AppResources;
+			sourceTree = "<group>";
+		};
 		D884DC032A90ED8600B7D89A = {
 			isa = PBXGroup;
 			children = (
@@ -56,12 +65,11 @@
 		D884DC0E2A90ED8600B7D89A /* kirisShygysApp */ = {
 			isa = PBXGroup;
 			children = (
+				D884DC1A2A90ED8700B7D89A /* LaunchScreen.storyboard */,
 				D884DC0F2A90ED8600B7D89A /* AppDelegate.swift */,
 				D884DC112A90ED8600B7D89A /* SceneDelegate.swift */,
+				267E26D62A9D307100279F98 /* AppResources */,
 				D884DC132A90ED8600B7D89A /* ViewController.swift */,
-				D884DC182A90ED8700B7D89A /* Assets.xcassets */,
-				D884DC1A2A90ED8700B7D89A /* LaunchScreen.storyboard */,
-				D884DC1D2A90ED8700B7D89A /* Info.plist */,
 			);
 			path = kirisShygysApp;
 			sourceTree = "<group>";
@@ -283,8 +291,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = kirisShygysApp/Info.plist;
+				INFOPLIST_FILE = kirisShygysApp/AppResources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -309,8 +318,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = kirisShygysApp/Info.plist;
+				INFOPLIST_FILE = kirisShygysApp/AppResources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -356,8 +366,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
-				branch = develop;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
