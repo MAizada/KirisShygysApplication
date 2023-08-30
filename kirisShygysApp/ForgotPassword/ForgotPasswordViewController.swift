@@ -23,7 +23,7 @@ final class ForgotPasswordViewController: UIViewController {
     private lazy var emailLabel: UILabel = {
         let label = UILabel()
         label.text = "Your email is on the way"
-        label.font = UIFont(name: "Arial", size: 24)
+        label.font = UIFont.boldSystemFont(ofSize: 24)
         label.textAlignment = .center
         label.textColor = .black
         return label
@@ -36,8 +36,18 @@ final class ForgotPasswordViewController: UIViewController {
         label.font = UIFont(name: "Arial", size: 16)
         label.textAlignment = .center
         label.textColor = .black
-        
         return label
+    }()
+    
+    private lazy var backButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor(named: "violet")
+        button.layer.cornerRadius = 16
+        button.setTitle("Back to Login", for: .normal)
+        button.tintColor = UIColor(named: "baseLight")
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.addTarget(self, action: #selector(backButtonDidPressed), for: .touchUpInside)
+        return button
     }()
     
     // MARK: - Lifecycle
@@ -57,7 +67,11 @@ final class ForgotPasswordViewController: UIViewController {
         view.addSubview(forgotImageView)
         view.addSubview(emailLabel)
         view.addSubview(descriptionLabel)
-        
+        view.addSubview(backButton)
+    }
+    
+    @objc private func backButtonDidPressed() {
+        print("Back Button Did Pressed")
     }
     
     // MARK: - Setup Constraints
@@ -81,6 +95,12 @@ final class ForgotPasswordViewController: UIViewController {
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-23)
             make.height.equalTo(57)
+        }
+        
+        backButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview().offset(-50)
+            make.height.equalTo(56)
         }
     }
 }

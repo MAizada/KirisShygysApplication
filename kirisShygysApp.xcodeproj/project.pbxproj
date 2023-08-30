@@ -75,11 +75,11 @@
 		D884DC0E2A90ED8600B7D89A /* kirisShygysApp */ = {
 			isa = PBXGroup;
 			children = (
-				266835442A9FA514004C6ADD /* ForgotPassword */,
 				D884DC1A2A90ED8700B7D89A /* LaunchScreen.storyboard */,
 				D884DC0F2A90ED8600B7D89A /* AppDelegate.swift */,
 				D884DC112A90ED8600B7D89A /* SceneDelegate.swift */,
 				267E26D62A9D307100279F98 /* AppResources */,
+				266835442A9FA514004C6ADD /* ForgotPassword */,
 				D884DC132A90ED8600B7D89A /* ViewController.swift */,
 			);
 			path = kirisShygysApp;
