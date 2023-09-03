@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		266835462A9FA598004C6ADD /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266835452A9FA598004C6ADD /* ForgotPasswordViewController.swift */; };
+		2E548B742AA4EDD7008635FF /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B732AA4EDD7008635FF /* MainTabBarController.swift */; };
+		2E548B772AA4EE22008635FF /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B762AA4EE22008635FF /* HomeViewController.swift */; };
+		2E548B792AA4EE45008635FF /* TransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B782AA4EE45008635FF /* TransactionViewController.swift */; };
+		2E548B7B2AA4EE57008635FF /* BudgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B7A2AA4EE57008635FF /* BudgetViewController.swift */; };
+		2E548B7D2AA4EE62008635FF /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B7C2AA4EE62008635FF /* ProfileViewController.swift */; };
+		2E548B7F2AA4EE71008635FF /* IncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B7E2AA4EE71008635FF /* IncomeViewController.swift */; };
+		2E548B812AA4EE87008635FF /* ExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B802AA4EE87008635FF /* ExpenseViewController.swift */; };
 		D884DC102A90ED8600B7D89A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D884DC0F2A90ED8600B7D89A /* AppDelegate.swift */; };
 		D884DC122A90ED8600B7D89A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D884DC112A90ED8600B7D89A /* SceneDelegate.swift */; };
 		D884DC142A90ED8600B7D89A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D884DC132A90ED8600B7D89A /* ViewController.swift */; };
@@ -18,6 +25,13 @@
 
 /* Begin PBXFileReference section */
 		266835452A9FA598004C6ADD /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		2E548B732AA4EDD7008635FF /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		2E548B762AA4EE22008635FF /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		2E548B782AA4EE45008635FF /* TransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewController.swift; sourceTree = "<group>"; };
+		2E548B7A2AA4EE57008635FF /* BudgetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetViewController.swift; sourceTree = "<group>"; };
+		2E548B7C2AA4EE62008635FF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		2E548B7E2AA4EE71008635FF /* IncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewController.swift; sourceTree = "<group>"; };
+		2E548B802AA4EE87008635FF /* ExpenseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseViewController.swift; sourceTree = "<group>"; };
 		D884DC0C2A90ED8600B7D89A /* kirisShygysApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kirisShygysApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D884DC0F2A90ED8600B7D89A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D884DC112A90ED8600B7D89A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -56,6 +70,27 @@
 			path = AppResources;
 			sourceTree = "<group>";
 		};
+		2E548B722AA4EDAC008635FF /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				2E548B732AA4EDD7008635FF /* MainTabBarController.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		2E548B752AA4EDED008635FF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2E548B762AA4EE22008635FF /* HomeViewController.swift */,
+				2E548B782AA4EE45008635FF /* TransactionViewController.swift */,
+				2E548B7A2AA4EE57008635FF /* BudgetViewController.swift */,
+				2E548B7C2AA4EE62008635FF /* ProfileViewController.swift */,
+				2E548B7E2AA4EE71008635FF /* IncomeViewController.swift */,
+				2E548B802AA4EE87008635FF /* ExpenseViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		D884DC032A90ED8600B7D89A = {
 			isa = PBXGroup;
 			children = (
@@ -80,6 +115,8 @@
 				D884DC112A90ED8600B7D89A /* SceneDelegate.swift */,
 				267E26D62A9D307100279F98 /* AppResources */,
 				266835442A9FA514004C6ADD /* ForgotPassword */,
+				2E548B722AA4EDAC008635FF /* TabBar */,
+				2E548B752AA4EDED008635FF /* Controllers */,
 				D884DC132A90ED8600B7D89A /* ViewController.swift */,
 			);
 			path = kirisShygysApp;
@@ -161,10 +198,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E548B812AA4EE87008635FF /* ExpenseViewController.swift in Sources */,
 				266835462A9FA598004C6ADD /* ForgotPasswordViewController.swift in Sources */,
+				2E548B7F2AA4EE71008635FF /* IncomeViewController.swift in Sources */,
+				2E548B792AA4EE45008635FF /* TransactionViewController.swift in Sources */,
 				D884DC142A90ED8600B7D89A /* ViewController.swift in Sources */,
+				2E548B742AA4EDD7008635FF /* MainTabBarController.swift in Sources */,
 				D884DC102A90ED8600B7D89A /* AppDelegate.swift in Sources */,
 				D884DC122A90ED8600B7D89A /* SceneDelegate.swift in Sources */,
+				2E548B7D2AA4EE62008635FF /* ProfileViewController.swift in Sources */,
+				2E548B772AA4EE22008635FF /* HomeViewController.swift in Sources */,
+				2E548B7B2AA4EE57008635FF /* BudgetViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

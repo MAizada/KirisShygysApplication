@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let send = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: send)
-        let navigationController = ForgotPasswordViewController()
+        let navigationController =  MainTabBarController()
         self.window = window
         window.rootViewController = navigationController
         window.overrideUserInterfaceStyle = .light
