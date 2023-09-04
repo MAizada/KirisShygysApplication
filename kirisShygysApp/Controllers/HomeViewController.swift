@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 
-class HomeViewController: UITabBarController {
+final class HomeViewController: UIViewController {
     
-    let avatarImage: UIImageView = {
+    private lazy var avatarImage: UIImageView = {
         let image =  UIImageView()
         image.image = UIImage(named: "Avatar")
         image.contentMode = .left
@@ -18,14 +18,14 @@ class HomeViewController: UITabBarController {
         return image
     }()
     
-    let arrowButton: UIButton = {
+    private lazy var arrowButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "arrow down 2"), for: .normal)
+        button.setImage(UIImage(named: "arrow_down"), for: .normal)
         button.contentMode = .center
         return button
     }()
     
-    let monthLabel: UILabel = {
+    private lazy var monthLabel: UILabel = {
         let label = UILabel()
         label.text = "October"
         label.textAlignment = .center
@@ -33,13 +33,13 @@ class HomeViewController: UITabBarController {
         return label
     }()
     
-    let notificationButton: UIButton = {
+    private lazy var notificationButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "notifiaction"), for: .normal)
         return button
     }()
     
-    let accountBalanceLabel: UILabel = {
+    private lazy var accountBalanceLabel: UILabel = {
         let label = UILabel()
         label.text = "Account Balance"
         label.font = .boldSystemFont(ofSize: 14)
@@ -48,7 +48,7 @@ class HomeViewController: UITabBarController {
         return label
     }()
     
-    let moneyLabel: UILabel = {
+    private lazy var moneyLabel: UILabel = {
         let label = UILabel()
         label.text = "$9400"
         label.textAlignment = .center
@@ -56,28 +56,27 @@ class HomeViewController: UITabBarController {
         return label
     }()
     
-    var incomeView: UIView = {
+    private lazy var incomeView: UIView = {
         let view = UIView()
-//        let greenColor = UIColor(red: 0x2B/255, green: 0xA4/255, blue: 0x78/255, alpha: 1.0)
         view.layer.cornerRadius = 15
         view.backgroundColor = UIColor(named: "green")
         return view
     }()
     
-    var rectangleView: UIView = {
+    private lazy var rectangleView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 15
         view.backgroundColor = .white
         return view
     }()
     
-    let incomeImage: UIImageView = {
+    private lazy var incomeImage: UIImageView = {
         let image =  UIImageView()
         image.image = UIImage(named: "income")
         return image
     }()
     
-    let incomeLabel: UILabel = {
+    private lazy var incomeLabel: UILabel = {
         let label = UILabel()
         label.text = "Income"
         label.font = .systemFont(ofSize: 14)
@@ -85,7 +84,7 @@ class HomeViewController: UITabBarController {
         return label
     }()
     
-    let amountLabel: UILabel = {
+    private lazy var amountLabel: UILabel = {
         let label = UILabel()
         label.text = "$5000"
         label.font = .boldSystemFont(ofSize: 22)
@@ -94,7 +93,7 @@ class HomeViewController: UITabBarController {
         return label
     }()
     
-    let expensesView: UIView = {
+    private lazy var expensesView: UIView = {
         let view = UIView()
         let redColor = UIColor(red: 0xE9/255, green: 0x4D/255, blue: 0x58/255, alpha: 1.0)
         view.backgroundColor = redColor
@@ -102,20 +101,20 @@ class HomeViewController: UITabBarController {
         return view
     }()
     
-    let rectangleView2: UIView = {
+    private lazy var rectangleViewSecond: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 15
         view.backgroundColor = .white
         return view
     }()
     
-    let expenseImage: UIImageView = {
+    private lazy var expenseImage: UIImageView = {
         let image =  UIImageView()
         image.image = UIImage(named: "expense")
         return image
     }()
     
-    let expenseLabel: UILabel = {
+    private lazy var expenseLabel: UILabel = {
         let label = UILabel()
         label.text = "Expenses"
         label.font = .systemFont(ofSize: 14)
@@ -123,7 +122,7 @@ class HomeViewController: UITabBarController {
         return label
     }()
     
-    let amountLabel2: UILabel = {
+    private lazy var amountLabelSecond: UILabel = {
         let label = UILabel()
         label.text = "$1200"
         label.font = .boldSystemFont(ofSize: 22)
@@ -132,7 +131,7 @@ class HomeViewController: UITabBarController {
         return label
     }()
     
-    let spendFrequencyLabel: UILabel = {
+    private lazy var spendFrequencyLabel: UILabel = {
         let label = UILabel()
         label.text = "Spend Frequency"
         label.textAlignment = .center
@@ -140,7 +139,7 @@ class HomeViewController: UITabBarController {
         return label
     }()
     
-    private let segmentedControl: UISegmentedControl = {
+    private lazy var segmentedControl: UISegmentedControl = {
         let items = ["Today", "Weak", "Month", "Year"]
         let segment = UISegmentedControl(items: items)
         segment.translatesAutoresizingMaskIntoConstraints = false
@@ -148,7 +147,7 @@ class HomeViewController: UITabBarController {
         return segment
     }()
     
-    let resentLabel: UILabel = {
+    private lazy var resentLabel: UILabel = {
         let label = UILabel()
         label.text = "Recent Transaction"
         label.textAlignment = .center
@@ -156,43 +155,35 @@ class HomeViewController: UITabBarController {
         return label
     }()
     
-    let tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView()
         
-       return tableView
+        return tableView
     }()
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupViews()
         setupConstraints()
     }
     
     // MARK: - Setup Views
+    
     private func setupViews() {
-        view.addSubview(avatarImage)
-        view.addSubview(arrowButton)
-        view.addSubview(monthLabel)
-        view.addSubview(notificationButton)
-        view.addSubview(accountBalanceLabel)
-        view.addSubview(moneyLabel)
-        view.addSubview(incomeView)
-        view.addSubview(rectangleView)
-        view.addSubview(incomeImage)
-        view.addSubview(incomeLabel)
-        view.addSubview(amountLabel)
-        view.addSubview(expensesView)
-        view.addSubview(rectangleView2)
-        view.addSubview(expenseImage)
-        view.addSubview(expenseLabel)
-        view.addSubview(amountLabel2)
-        view.addSubview(spendFrequencyLabel)
-        view.addSubview(segmentedControl)
-        view.addSubview(resentLabel)
+        
+        view.backgroundColor = UIColor(named: "linearGradient")
+        [avatarImage, arrowButton, monthLabel, notificationButton, accountBalanceLabel, moneyLabel, incomeView, rectangleView,
+         incomeImage, incomeLabel, amountLabel, expensesView,rectangleViewSecond,expenseImage,expenseLabel,amountLabelSecond, spendFrequencyLabel, segmentedControl,
+         resentLabel].forEach { view.addSubview($0) }
+        
+        
     }
     
     // MARK: - Setup Constraints
+    
     private func setupConstraints() {
         avatarImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(56)
@@ -268,15 +259,15 @@ class HomeViewController: UITabBarController {
             make.width.equalTo(164)
         }
         
-        rectangleView2.snp.makeConstraints { make in
+        rectangleViewSecond.snp.makeConstraints { make in
             make.centerY.equalTo(expensesView.snp.centerY)
             make.left.equalTo(expensesView.snp.left).offset(16)
             make.width.height.equalTo(48)
         }
         
         expenseImage.snp.makeConstraints { make in
-            make.centerX.equalTo(rectangleView2)
-            make.centerY.equalTo(rectangleView2)
+            make.centerX.equalTo(rectangleViewSecond)
+            make.centerY.equalTo(rectangleViewSecond)
             make.width.height.equalTo(32)
         }
         
@@ -287,7 +278,7 @@ class HomeViewController: UITabBarController {
             make.height.equalTo(17)
         }
         
-        amountLabel2.snp.makeConstraints { make in
+        amountLabelSecond.snp.makeConstraints { make in
             make.top.equalTo(expenseLabel.snp.bottom).offset(3)
             make.centerX.equalTo(expensesView.snp.centerX).offset(20)
             make.bottom.lessThanOrEqualTo(expensesView.snp.bottom).offset(-8)
@@ -309,10 +300,5 @@ class HomeViewController: UITabBarController {
             make.top.equalTo(segmentedControl.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(20)
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.view.backgroundColor = UIColor.white
     }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BudgetViewController: UIViewController {
+final class BudgetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
