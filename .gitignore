@@ -89,6 +89,9 @@ fastlane/test_output
 
 iOSInjectionProject/
 .DS_Store
-kirisShygysApp.xcodeproj/xcuserdata/iskakovmiras.xcuserdatad
-kirisShygysApp.xcodeproj/xcuserdata/iskakovmiras.xcuserdatad/xcschemes/xcschememanagement.plist
+
+####
+# Ignore temporary files
+xcuserdata/
+*.xcscmblueprint
 
