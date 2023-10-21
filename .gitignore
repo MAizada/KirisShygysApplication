@@ -89,6 +89,15 @@ fastlane/test_output
 
 iOSInjectionProject/
 .DS_Store
-kirisShygysApp.xcodeproj/xcuserdata/iskakovmiras.xcuserdatad
-kirisShygysApp.xcodeproj/xcuserdata/iskakovmiras.xcuserdatad/xcschemes/xcschememanagement.plist
+
+####
+# Xcode 4 - semi-personal settings
+#
+#
+# OPTION 1: ---------------------------------
+#     throw away ALL personal settings (including custom schemes!
+#     - unless they are "shared")
+#
+# NB: this is exclusive with OPTION 2 below
+xcuserdata
 
