@@ -8,9 +8,46 @@
 
 /* Begin PBXBuildFile section */
 		266835462A9FA598004C6ADD /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266835452A9FA598004C6ADD /* ForgotPasswordViewController.swift */; };
+		2E3DCEAB2ACEC32E00BFDC19 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEAA2ACEC32E00BFDC19 /* TransactionTableViewCell.swift */; };
+		2E3DCEAE2AD022A300BFDC19 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEAD2AD022A300BFDC19 /* Transaction.swift */; };
+		2E3DCEB22AD0A61A00BFDC19 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEB12AD0A61A00BFDC19 /* NotificationViewController.swift */; };
+		2E3DCEB62AD1D5F400BFDC19 /* IncomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEB52AD1D5F400BFDC19 /* IncomeView.swift */; };
+		2E3DCEB82AD1D60600BFDC19 /* ExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEB72AD1D60600BFDC19 /* ExpenseView.swift */; };
+		2E3DCEBA2AD3063100BFDC19 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEB92AD3063100BFDC19 /* CustomTabBar.swift */; };
+		2E3DCEBC2AD8459D00BFDC19 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEBB2AD8459D00BFDC19 /* SettingsTableViewCell.swift */; };
+		2E3DCEBE2AD8479F00BFDC19 /* SettingsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEBD2AD8479F00BFDC19 /* SettingsItem.swift */; };
+		2E3DCEC02AD85B3800BFDC19 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEBF2AD85B3800BFDC19 /* NotificationTableViewCell.swift */; };
+		2E3DCEC22AD85CBC00BFDC19 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEC12AD85CBC00BFDC19 /* Notification.swift */; };
+		2E3DCEF22ADDA8A600BFDC19 /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEF12ADDA8A600BFDC19 /* HomePresenter.swift */; };
+		2E3DCEF42ADDA8C200BFDC19 /* TransactionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEF32ADDA8C200BFDC19 /* TransactionPresenter.swift */; };
+		2E3DCEF62ADDA93300BFDC19 /* BudgetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEF52ADDA93300BFDC19 /* BudgetPresenter.swift */; };
+		2E3DCEF82ADDA94800BFDC19 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEF72ADDA94800BFDC19 /* ProfilePresenter.swift */; };
+		2E3DCEFA2ADDA95900BFDC19 /* IncomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEF92ADDA95900BFDC19 /* IncomePresenter.swift */; };
+		2E3DCEFC2ADDA96700BFDC19 /* ExpensePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEFB2ADDA96700BFDC19 /* ExpensePresenter.swift */; };
+		2E3DCEFE2ADDA97800BFDC19 /* NotificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEFD2ADDA97800BFDC19 /* NotificationPresenter.swift */; };
+		2E3DCF002ADDAF6300BFDC19 /* HomeViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCEFF2ADDAF6300BFDC19 /* HomeViewProtocol.swift */; };
+		2E3DCF022ADDAF7600BFDC19 /* HomePresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF012ADDAF7600BFDC19 /* HomePresenterProtocol.swift */; };
+		2E3DCF042ADDAF8C00BFDC19 /* TransactionViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF032ADDAF8C00BFDC19 /* TransactionViewProtocol.swift */; };
+		2E3DCF062ADDAFB000BFDC19 /* TransactionPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF052ADDAFB000BFDC19 /* TransactionPresenterProtocol.swift */; };
+		2E3DCF082ADDAFCC00BFDC19 /* BudgetViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF072ADDAFCC00BFDC19 /* BudgetViewProtocol.swift */; };
+		2E3DCF0A2ADDAFDC00BFDC19 /* BudgetPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF092ADDAFDC00BFDC19 /* BudgetPresenterProtocol.swift */; };
+		2E3DCF0C2ADDAFEF00BFDC19 /* ProfileViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF0B2ADDAFEF00BFDC19 /* ProfileViewProtocol.swift */; };
+		2E3DCF0E2ADDB00100BFDC19 /* ProfilePresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF0D2ADDB00100BFDC19 /* ProfilePresenterProtocol.swift */; };
+		2E3DCF102ADDB01200BFDC19 /* IncomeViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF0F2ADDB01200BFDC19 /* IncomeViewProtocol.swift */; };
+		2E3DCF122ADDB02500BFDC19 /* IncomePresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF112ADDB02500BFDC19 /* IncomePresenterProtocol.swift */; };
+		2E3DCF142ADDB03A00BFDC19 /* ExpenseViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF132ADDB03A00BFDC19 /* ExpenseViewProtocol.swift */; };
+		2E3DCF162ADDB04E00BFDC19 /* ExpensePresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF152ADDB04E00BFDC19 /* ExpensePresenterProtocol.swift */; };
+		2E3DCF182ADDB05D00BFDC19 /* NotificationViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF172ADDB05D00BFDC19 /* NotificationViewProtocol.swift */; };
+		2E3DCF1A2ADDB06D00BFDC19 /* NotificationPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3DCF192ADDB06D00BFDC19 /* NotificationPresenterProtocol.swift */; };
+		2E548B742AA4EDD7008635FF /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B732AA4EDD7008635FF /* MainTabBarController.swift */; };
+		2E548B772AA4EE22008635FF /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B762AA4EE22008635FF /* HomeViewController.swift */; };
+		2E548B792AA4EE45008635FF /* TransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B782AA4EE45008635FF /* TransactionViewController.swift */; };
+		2E548B7B2AA4EE57008635FF /* BudgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B7A2AA4EE57008635FF /* BudgetViewController.swift */; };
+		2E548B7D2AA4EE62008635FF /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B7C2AA4EE62008635FF /* ProfileViewController.swift */; };
+		2E548B7F2AA4EE71008635FF /* IncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B7E2AA4EE71008635FF /* IncomeViewController.swift */; };
+		2E548B812AA4EE87008635FF /* ExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E548B802AA4EE87008635FF /* ExpenseViewController.swift */; };
 		D884DC102A90ED8600B7D89A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D884DC0F2A90ED8600B7D89A /* AppDelegate.swift */; };
 		D884DC122A90ED8600B7D89A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D884DC112A90ED8600B7D89A /* SceneDelegate.swift */; };
-		D884DC142A90ED8600B7D89A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D884DC132A90ED8600B7D89A /* ViewController.swift */; };
 		D884DC192A90ED8700B7D89A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D884DC182A90ED8700B7D89A /* Assets.xcassets */; };
 		D884DC1C2A90ED8700B7D89A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D884DC1A2A90ED8700B7D89A /* LaunchScreen.storyboard */; };
 		D8C41D802A93DFCF0041380D /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = D8C41D7F2A93DFCF0041380D /* SnapKit */; };
@@ -18,10 +55,47 @@
 
 /* Begin PBXFileReference section */
 		266835452A9FA598004C6ADD /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		2E3DCEAA2ACEC32E00BFDC19 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
+		2E3DCEAD2AD022A300BFDC19 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		2E3DCEB12AD0A61A00BFDC19 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		2E3DCEB52AD1D5F400BFDC19 /* IncomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeView.swift; sourceTree = "<group>"; };
+		2E3DCEB72AD1D60600BFDC19 /* ExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseView.swift; sourceTree = "<group>"; };
+		2E3DCEB92AD3063100BFDC19 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		2E3DCEBB2AD8459D00BFDC19 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		2E3DCEBD2AD8479F00BFDC19 /* SettingsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItem.swift; sourceTree = "<group>"; };
+		2E3DCEBF2AD85B3800BFDC19 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
+		2E3DCEC12AD85CBC00BFDC19 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		2E3DCEF12ADDA8A600BFDC19 /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
+		2E3DCEF32ADDA8C200BFDC19 /* TransactionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPresenter.swift; sourceTree = "<group>"; };
+		2E3DCEF52ADDA93300BFDC19 /* BudgetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPresenter.swift; sourceTree = "<group>"; };
+		2E3DCEF72ADDA94800BFDC19 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
+		2E3DCEF92ADDA95900BFDC19 /* IncomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomePresenter.swift; sourceTree = "<group>"; };
+		2E3DCEFB2ADDA96700BFDC19 /* ExpensePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensePresenter.swift; sourceTree = "<group>"; };
+		2E3DCEFD2ADDA97800BFDC19 /* NotificationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPresenter.swift; sourceTree = "<group>"; };
+		2E3DCEFF2ADDAF6300BFDC19 /* HomeViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF012ADDAF7600BFDC19 /* HomePresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenterProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF032ADDAF8C00BFDC19 /* TransactionViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF052ADDAFB000BFDC19 /* TransactionPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPresenterProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF072ADDAFCC00BFDC19 /* BudgetViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetViewProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF092ADDAFDC00BFDC19 /* BudgetPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPresenterProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF0B2ADDAFEF00BFDC19 /* ProfileViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF0D2ADDB00100BFDC19 /* ProfilePresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenterProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF0F2ADDB01200BFDC19 /* IncomeViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF112ADDB02500BFDC19 /* IncomePresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomePresenterProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF132ADDB03A00BFDC19 /* ExpenseViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseViewProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF152ADDB04E00BFDC19 /* ExpensePresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensePresenterProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF172ADDB05D00BFDC19 /* NotificationViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewProtocol.swift; sourceTree = "<group>"; };
+		2E3DCF192ADDB06D00BFDC19 /* NotificationPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPresenterProtocol.swift; sourceTree = "<group>"; };
+		2E548B732AA4EDD7008635FF /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		2E548B762AA4EE22008635FF /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		2E548B782AA4EE45008635FF /* TransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewController.swift; sourceTree = "<group>"; };
+		2E548B7A2AA4EE57008635FF /* BudgetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetViewController.swift; sourceTree = "<group>"; };
+		2E548B7C2AA4EE62008635FF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		2E548B7E2AA4EE71008635FF /* IncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeViewController.swift; sourceTree = "<group>"; };
+		2E548B802AA4EE87008635FF /* ExpenseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseViewController.swift; sourceTree = "<group>"; };
 		D884DC0C2A90ED8600B7D89A /* kirisShygysApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kirisShygysApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D884DC0F2A90ED8600B7D89A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D884DC112A90ED8600B7D89A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D884DC132A90ED8600B7D89A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D884DC182A90ED8700B7D89A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D884DC1B2A90ED8700B7D89A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D884DC1D2A90ED8700B7D89A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -56,6 +130,114 @@
 			path = AppResources;
 			sourceTree = "<group>";
 		};
+		2E3DCEAC2AD0229300BFDC19 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2E3DCEAD2AD022A300BFDC19 /* Transaction.swift */,
+				2E3DCEBD2AD8479F00BFDC19 /* SettingsItem.swift */,
+				2E3DCEC12AD85CBC00BFDC19 /* Notification.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2E3DCEEE2ADDA64500BFDC19 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				2E3DCEAA2ACEC32E00BFDC19 /* TransactionTableViewCell.swift */,
+				2E3DCEBB2AD8459D00BFDC19 /* SettingsTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		2E548B722AA4EDAC008635FF /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				2E548B732AA4EDD7008635FF /* MainTabBarController.swift */,
+				2E3DCEB92AD3063100BFDC19 /* CustomTabBar.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		2ECB3A762AE07C8F009EAA9C /* HomeScreen */ = {
+			isa = PBXGroup;
+			children = (
+				2E548B762AA4EE22008635FF /* HomeViewController.swift */,
+				2E3DCEFF2ADDAF6300BFDC19 /* HomeViewProtocol.swift */,
+				2E3DCF012ADDAF7600BFDC19 /* HomePresenterProtocol.swift */,
+				2E3DCEF12ADDA8A600BFDC19 /* HomePresenter.swift */,
+				2E3DCEB52AD1D5F400BFDC19 /* IncomeView.swift */,
+				2E3DCEB72AD1D60600BFDC19 /* ExpenseView.swift */,
+			);
+			path = HomeScreen;
+			sourceTree = "<group>";
+		};
+		2ECB3A772AE07D5C009EAA9C /* TransactionScreen */ = {
+			isa = PBXGroup;
+			children = (
+				2E548B782AA4EE45008635FF /* TransactionViewController.swift */,
+				2E3DCF032ADDAF8C00BFDC19 /* TransactionViewProtocol.swift */,
+				2E3DCF052ADDAFB000BFDC19 /* TransactionPresenterProtocol.swift */,
+				2E3DCEF32ADDA8C200BFDC19 /* TransactionPresenter.swift */,
+			);
+			path = TransactionScreen;
+			sourceTree = "<group>";
+		};
+		2ECB3A782AE07D71009EAA9C /* BudgetScreen */ = {
+			isa = PBXGroup;
+			children = (
+				2E548B7A2AA4EE57008635FF /* BudgetViewController.swift */,
+				2E3DCF072ADDAFCC00BFDC19 /* BudgetViewProtocol.swift */,
+				2E3DCF092ADDAFDC00BFDC19 /* BudgetPresenterProtocol.swift */,
+				2E3DCEF52ADDA93300BFDC19 /* BudgetPresenter.swift */,
+			);
+			path = BudgetScreen;
+			sourceTree = "<group>";
+		};
+		2ECB3A792AE07D89009EAA9C /* IncomeScreen */ = {
+			isa = PBXGroup;
+			children = (
+				2E548B7E2AA4EE71008635FF /* IncomeViewController.swift */,
+				2E3DCF0F2ADDB01200BFDC19 /* IncomeViewProtocol.swift */,
+				2E3DCF112ADDB02500BFDC19 /* IncomePresenterProtocol.swift */,
+				2E3DCEF92ADDA95900BFDC19 /* IncomePresenter.swift */,
+			);
+			path = IncomeScreen;
+			sourceTree = "<group>";
+		};
+		2ECB3A7A2AE07DD3009EAA9C /* ProfileScreen */ = {
+			isa = PBXGroup;
+			children = (
+				2E548B7C2AA4EE62008635FF /* ProfileViewController.swift */,
+				2E3DCF0B2ADDAFEF00BFDC19 /* ProfileViewProtocol.swift */,
+				2E3DCF0D2ADDB00100BFDC19 /* ProfilePresenterProtocol.swift */,
+				2E3DCEF72ADDA94800BFDC19 /* ProfilePresenter.swift */,
+			);
+			path = ProfileScreen;
+			sourceTree = "<group>";
+		};
+		2ECB3A7B2AE07DF0009EAA9C /* ExpenseScreen */ = {
+			isa = PBXGroup;
+			children = (
+				2E548B802AA4EE87008635FF /* ExpenseViewController.swift */,
+				2E3DCF132ADDB03A00BFDC19 /* ExpenseViewProtocol.swift */,
+				2E3DCF152ADDB04E00BFDC19 /* ExpensePresenterProtocol.swift */,
+				2E3DCEFB2ADDA96700BFDC19 /* ExpensePresenter.swift */,
+			);
+			path = ExpenseScreen;
+			sourceTree = "<group>";
+		};
+		2ECB3A7C2AE07E11009EAA9C /* NotificationScreen */ = {
+			isa = PBXGroup;
+			children = (
+				2E3DCEB12AD0A61A00BFDC19 /* NotificationViewController.swift */,
+				2E3DCF172ADDB05D00BFDC19 /* NotificationViewProtocol.swift */,
+				2E3DCF192ADDB06D00BFDC19 /* NotificationPresenterProtocol.swift */,
+				2E3DCEFD2ADDA97800BFDC19 /* NotificationPresenter.swift */,
+				2E3DCEBF2AD85B3800BFDC19 /* NotificationTableViewCell.swift */,
+			);
+			path = NotificationScreen;
+			sourceTree = "<group>";
+		};
 		D884DC032A90ED8600B7D89A = {
 			isa = PBXGroup;
 			children = (
@@ -80,7 +262,16 @@
 				D884DC112A90ED8600B7D89A /* SceneDelegate.swift */,
 				267E26D62A9D307100279F98 /* AppResources */,
 				266835442A9FA514004C6ADD /* ForgotPassword */,
-				D884DC132A90ED8600B7D89A /* ViewController.swift */,
+				2E548B722AA4EDAC008635FF /* TabBar */,
+				2ECB3A762AE07C8F009EAA9C /* HomeScreen */,
+				2ECB3A772AE07D5C009EAA9C /* TransactionScreen */,
+				2ECB3A782AE07D71009EAA9C /* BudgetScreen */,
+				2ECB3A7A2AE07DD3009EAA9C /* ProfileScreen */,
+				2ECB3A792AE07D89009EAA9C /* IncomeScreen */,
+				2ECB3A7B2AE07DF0009EAA9C /* ExpenseScreen */,
+				2ECB3A7C2AE07E11009EAA9C /* NotificationScreen */,
+				2E3DCEAC2AD0229300BFDC19 /* Models */,
+				2E3DCEEE2ADDA64500BFDC19 /* Cells */,
 			);
 			path = kirisShygysApp;
 			sourceTree = "<group>";
@@ -161,10 +352,47 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E548B812AA4EE87008635FF /* ExpenseViewController.swift in Sources */,
+				2E3DCF042ADDAF8C00BFDC19 /* TransactionViewProtocol.swift in Sources */,
+				2E3DCEFC2ADDA96700BFDC19 /* ExpensePresenter.swift in Sources */,
+				2E3DCEB62AD1D5F400BFDC19 /* IncomeView.swift in Sources */,
+				2E3DCEBC2AD8459D00BFDC19 /* SettingsTableViewCell.swift in Sources */,
 				266835462A9FA598004C6ADD /* ForgotPasswordViewController.swift in Sources */,
-				D884DC142A90ED8600B7D89A /* ViewController.swift in Sources */,
+				2E3DCF062ADDAFB000BFDC19 /* TransactionPresenterProtocol.swift in Sources */,
+				2E548B7F2AA4EE71008635FF /* IncomeViewController.swift in Sources */,
+				2E548B792AA4EE45008635FF /* TransactionViewController.swift in Sources */,
+				2E3DCF0E2ADDB00100BFDC19 /* ProfilePresenterProtocol.swift in Sources */,
+				2E3DCEAE2AD022A300BFDC19 /* Transaction.swift in Sources */,
+				2E548B742AA4EDD7008635FF /* MainTabBarController.swift in Sources */,
+				2E3DCEBA2AD3063100BFDC19 /* CustomTabBar.swift in Sources */,
 				D884DC102A90ED8600B7D89A /* AppDelegate.swift in Sources */,
+				2E3DCF002ADDAF6300BFDC19 /* HomeViewProtocol.swift in Sources */,
 				D884DC122A90ED8600B7D89A /* SceneDelegate.swift in Sources */,
+				2E3DCEF42ADDA8C200BFDC19 /* TransactionPresenter.swift in Sources */,
+				2E548B7D2AA4EE62008635FF /* ProfileViewController.swift in Sources */,
+				2E3DCEB22AD0A61A00BFDC19 /* NotificationViewController.swift in Sources */,
+				2E3DCF122ADDB02500BFDC19 /* IncomePresenterProtocol.swift in Sources */,
+				2E548B772AA4EE22008635FF /* HomeViewController.swift in Sources */,
+				2E3DCF022ADDAF7600BFDC19 /* HomePresenterProtocol.swift in Sources */,
+				2E3DCF0C2ADDAFEF00BFDC19 /* ProfileViewProtocol.swift in Sources */,
+				2E3DCF1A2ADDB06D00BFDC19 /* NotificationPresenterProtocol.swift in Sources */,
+				2E3DCEAB2ACEC32E00BFDC19 /* TransactionTableViewCell.swift in Sources */,
+				2E3DCEC02AD85B3800BFDC19 /* NotificationTableViewCell.swift in Sources */,
+				2E3DCEF82ADDA94800BFDC19 /* ProfilePresenter.swift in Sources */,
+				2E3DCF0A2ADDAFDC00BFDC19 /* BudgetPresenterProtocol.swift in Sources */,
+				2E3DCEFA2ADDA95900BFDC19 /* IncomePresenter.swift in Sources */,
+				2E3DCEFE2ADDA97800BFDC19 /* NotificationPresenter.swift in Sources */,
+				2E3DCF182ADDB05D00BFDC19 /* NotificationViewProtocol.swift in Sources */,
+				2E3DCEC22AD85CBC00BFDC19 /* Notification.swift in Sources */,
+				2E3DCF162ADDB04E00BFDC19 /* ExpensePresenterProtocol.swift in Sources */,
+				2E3DCEF62ADDA93300BFDC19 /* BudgetPresenter.swift in Sources */,
+				2E3DCF082ADDAFCC00BFDC19 /* BudgetViewProtocol.swift in Sources */,
+				2E3DCEBE2AD8479F00BFDC19 /* SettingsItem.swift in Sources */,
+				2E548B7B2AA4EE57008635FF /* BudgetViewController.swift in Sources */,
+				2E3DCEB82AD1D60600BFDC19 /* ExpenseView.swift in Sources */,
+				2E3DCEF22ADDA8A600BFDC19 /* HomePresenter.swift in Sources */,
+				2E3DCF102ADDB01200BFDC19 /* IncomeViewProtocol.swift in Sources */,
+				2E3DCF142ADDB03A00BFDC19 /* ExpenseViewProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
