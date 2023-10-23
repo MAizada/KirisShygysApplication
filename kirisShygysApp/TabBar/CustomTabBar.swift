@@ -7,8 +7,7 @@
 
 import UIKit
 
-class CustomTabBar: UITabBar {
-    
+final class CustomTabBar: UITabBar {
     
     private var shapeLayer: CALayer?
     
@@ -28,12 +27,10 @@ class CustomTabBar: UITabBar {
         } else {
             self.layer.insertSublayer(shapeLayer, at: 0)
         }
-        
         self.shapeLayer = shapeLayer
     }
     
     func createPath() -> CGPath {
-        
         let height: CGFloat = 37.0
         let path = UIBezierPath()
         let centerWidth = self.frame.width / 2
@@ -57,7 +54,7 @@ class CustomTabBar: UITabBar {
     
     @IBInspectable var height: CGFloat = 65
     
-    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+    override public func sizeThatFits(_ size: CGSize) -> CGSize {
         guard let window = UIApplication.shared.keyWindow else {
             return super.sizeThatFits(size)
         }

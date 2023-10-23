@@ -9,7 +9,7 @@ import UIKit
 
 class NotificationTableViewCell: UITableViewCell {
 
-    let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.textColor = .black
@@ -18,7 +18,7 @@ class NotificationTableViewCell: UITableViewCell {
         return label
     }()
     
-    let descriptionLabel: UILabel = {
+    private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = ""
         label.textColor = .gray
@@ -27,7 +27,7 @@ class NotificationTableViewCell: UITableViewCell {
         return label
     }()
     
-    let dateLabel: UILabel = {
+    private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textColor = .gray
@@ -53,7 +53,6 @@ class NotificationTableViewCell: UITableViewCell {
     // MARK: - Setup Constraints
     
     private func setupConstraints() {
-        
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(contentView).offset(10)
             make.leading.equalTo(contentView).offset(10)
@@ -84,7 +83,6 @@ class NotificationTableViewCell: UITableViewCell {
         titleLabel.text = notification.title
         descriptionLabel.text = notification.description
         dateLabel.text = notification.time
-        
         }
     }
 

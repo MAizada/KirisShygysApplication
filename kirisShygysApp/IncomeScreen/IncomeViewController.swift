@@ -114,7 +114,7 @@ final class IncomeViewController: UIViewController {
     }
     
     @objc private func categoryArrowButtonTapped() {
-        // Обработчик нажатия на кнопку "arrowDown"
+        print("button tapped")
     }
     
     // MARK: - Setup Constraints

@@ -8,7 +8,6 @@
 import UIKit
 
 struct SettingsItem {
-    
     let image: UIImage
     let title: String
 }

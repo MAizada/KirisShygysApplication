@@ -17,9 +17,8 @@ final class MainTabBarController: UITabBarController {
     }
     
     private func generateTabBar() {
-        
         let customTabBar = CustomTabBar()
-            setValue(customTabBar, forKey: "tabBar")
+        setValue(customTabBar, forKey: "tabBar")
         
         let homeViewController = HomeViewController()
         let homeImage = UIImage(systemName: "house.fill")
@@ -45,13 +44,12 @@ final class MainTabBarController: UITabBarController {
         let transactionNavigationController = UINavigationController(rootViewController: transactionViewController)
         let budgetNavigationController = UINavigationController(rootViewController: budgetViewController)
         let profileNavigationController = UINavigationController(rootViewController: profileViewController)
-
+        
         let iconColor = UIColor(named: "brown")
         
         let buttonSize: CGFloat = 60
         let image = UIImage(systemName: "plus.circle.fill")?.withTintColor(iconColor!, renderingMode: .alwaysOriginal)
         let resizedImage = image?.resized(to: CGSize(width: buttonSize, height: buttonSize))
-
         
         let secondImage = UIImage(systemName: "xmark.circle.fill")?.withTintColor(iconColor!, renderingMode: .alwaysOriginal)
         let secondResizedImage = secondImage?.resized(to: CGSize(width: buttonSize, height: buttonSize))
@@ -59,7 +57,6 @@ final class MainTabBarController: UITabBarController {
         let plusButton = UIButton(type: .custom)
         plusButton.setImage(resizedImage, for: .normal)
         plusButton.setImage(secondResizedImage, for: .selected)
-        // plusButton.tintColor = UIColor(named: "brown")
         plusButton.backgroundColor = .clear
         plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         
@@ -75,9 +72,7 @@ final class MainTabBarController: UITabBarController {
     }
     
     @objc private func plusButtonTapped(_ sender: UIButton) {
-        
         sender.isSelected.toggle()
-        
         if sender.isSelected {
             showIncomeAndExpenseButtons()
         } else {
@@ -86,7 +81,6 @@ final class MainTabBarController: UITabBarController {
     }
     
     private func showIncomeAndExpenseButtons() {
-        
         let incomeButton = UIButton(type: .custom)
         incomeButton.setImage(UIImage(named: "incomeWhite"), for: .normal)
         incomeButton.backgroundColor = UIColor(named: "green")
@@ -115,7 +109,6 @@ final class MainTabBarController: UITabBarController {
             make.trailing.equalTo(-92)
             make.width.height.equalTo(56)
         }
-        
         view.layoutIfNeeded()
     }
     
@@ -128,7 +121,6 @@ final class MainTabBarController: UITabBarController {
     }
     
     @objc private func incomeButtonTapped() {
-        
         let incomeViewController = IncomeViewController()
         
         let incomeNavigationController = UINavigationController(rootViewController: incomeViewController)
@@ -136,15 +128,13 @@ final class MainTabBarController: UITabBarController {
     }
     
     @objc private func expenseButtonTapped() {
-        
         let expenseViewController = ExpenseViewController()
         
         let expenseNavigationController = UINavigationController(rootViewController: expenseViewController)
         self.present(expenseNavigationController, animated: true, completion: nil)
     }
-    
 }
-extension UIImage {
+    extension UIImage {
     func resized(to size: CGSize) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
         defer { UIGraphicsEndImageContext() }
@@ -153,10 +143,8 @@ extension UIImage {
     }
 }
 
-extension MainTabBarController: UITabBarControllerDelegate {
-    
+    extension MainTabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        
     }
 }
 

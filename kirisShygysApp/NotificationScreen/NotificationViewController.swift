@@ -8,18 +8,18 @@
 import UIKit
 import SnapKit
 
-class NotificationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+final class NotificationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - UI
     
-    private let backButton: UIButton = {
+    private lazy var backButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "arrow.left"), for: .normal)
         button.tintColor = .black
         return button
     }()
     
-    private let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Notification"
         label.textColor = .black
@@ -28,7 +28,7 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
         return label
     }()
     
-    private let moreButton: UIButton = {
+    private lazy var moreButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         button.tintColor = .black
@@ -42,7 +42,7 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
         return tableView
     }()
     
-    private let notifications: [Notification] = [
+    private lazy var notifications: [Notification] = [
         Notification(title: "Shopping budget has exceeds the..", description: "Your shopping budget has exceeds the lim...", time: "19.30"),
         Notification(title: "Utilities budget has exceeds the..", description: "Your utolities budget has exceeds the limit...", time: "19.30"),
     ]
@@ -66,7 +66,6 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
         moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
         
         tableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: "NotificationCell")
-
     }
     
     // MARK: - Actions
@@ -74,9 +73,9 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
     @objc func backButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
-
+    
     @objc func moreButtonTapped() {
-      print("tapped")
+        print("tapped")
     }
     
     // MARK: - Setup Constraints
@@ -114,9 +113,9 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == self.tableView {
             let cell = NotificationTableViewCell(style: .default, reuseIdentifier: nil)
-                   let notification = notifications[indexPath.row]
-                   cell.configure(with: notification)
-                   return cell
+            let notification = notifications[indexPath.row]
+            cell.configure(with: notification)
+            return cell
         }
         return UITableViewCell()
     }

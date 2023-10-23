@@ -11,14 +11,15 @@ import SnapKit
 class TransactionTableViewCell: UITableViewCell {
     
     // MARK: - UI
-    let transactionImageView: UIImageView = {
+    
+    private lazy var transactionImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "bag")
         imageView.layer.cornerRadius = 10
         return imageView
     }()
     
-    let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Shopping"
         label.textColor = .black
@@ -27,7 +28,7 @@ class TransactionTableViewCell: UITableViewCell {
         return label
     }()
     
-    let descriptionLabel: UILabel = {
+    private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "Buy some grocery"
         label.textColor = .gray
@@ -36,7 +37,7 @@ class TransactionTableViewCell: UITableViewCell {
         return label
     }()
     
-    let amountLabel: UILabel = {
+    private lazy var amountLabel: UILabel = {
         let label = UILabel()
         label.text = "- 120$"
         label.font = .systemFont(ofSize: 14)
@@ -44,7 +45,7 @@ class TransactionTableViewCell: UITableViewCell {
         return label
     }()
     
-    let dateLabel: UILabel = {
+    private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textColor = .gray
@@ -73,7 +74,6 @@ class TransactionTableViewCell: UITableViewCell {
     // MARK: - Setup Constraints
     
     private func setupConstraints() {
-        
         transactionImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(15)
             make.leading.equalToSuperview().offset(20)
@@ -116,7 +116,6 @@ class TransactionTableViewCell: UITableViewCell {
         amountLabel.text = transaction.amount
         amountLabel.textColor = UIColor(named: transaction.amountColorName)
         dateLabel.text = transaction.time
-        
         }
     }
 

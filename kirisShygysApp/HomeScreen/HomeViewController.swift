@@ -109,13 +109,13 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
         return tableView
     }()
     
-    private let transactions: [Transaction] = [
+    private lazy var transactions: [Transaction] = [
         Transaction(image: UIImage(named: "bag")!, title: "Shopping", description: "Buy some groceries", amount: "-$120", time: "10:30 AM", amountColorName: "red"),
         Transaction(image: UIImage(named: "recurringBill")!, title: "Subscription", description: "Disney+ Annual...", amount: "-$80", time: "03:30 PM", amountColorName: "red"),
         Transaction(image: UIImage(named: "restaurant")!, title: "Food", description: "Buy a ramen", amount: "-$32", time: "07:30 PM", amountColorName: "red"),
     ]
     
-    private let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    private lazy var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     
     private var selectedMonthIndex: Int?
     
@@ -140,21 +140,20 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
         transactionTableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: "TransactionCell")
         
     }
+    
     // MARK: - Setup NavigationBarItems
+    
     private func setupNavigationBarItems() {
-        
         let notificationBarButtonItem = UIBarButtonItem(customView: notificationButton)
         let arrowBarButtonItem = UIBarButtonItem(customView: arrowButton)
         let centerSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
         navigationItem.rightBarButtonItems = [notificationBarButtonItem, arrowBarButtonItem]
-//        navigationItem.centerItems = [arrowBarButtonItem]
         
         notificationButton.addTarget(self, action: #selector(notificationButtonTapped), for: .touchUpInside)
         arrowButton.addTarget(self, action: #selector(arrowButtonTapped), for: .touchUpInside)
         
         let centerSpaceBarButtonItem2 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
     }
     
     // MARK: - Actions
@@ -164,7 +163,6 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     @objc private func notificationButtonTapped() {
-        
         let notificationVC = NotificationViewController()
         self.present(notificationVC, animated: true, completion: nil)
     }
@@ -172,7 +170,6 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - Setup Constraints
     
     private func setupConstraints() {
-        
         avatarImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(56)
             make.leading.equalToSuperview().offset(16)

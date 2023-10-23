@@ -12,24 +12,25 @@ class SettingsTableViewCell: UITableViewCell {
     
     // MARK: - UI
     
-    private let containerView: UIView = {
+    private lazy var containerView: UIView = {
         let view = UIView()
         return view
     }()
     
-    let iconImageView: UIImageView = {
+   public var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
-    let titleLabel: UILabel = {
+   public var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         return label
     }()
     
     // MARK: - Lifecycle
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -51,7 +52,6 @@ class SettingsTableViewCell: UITableViewCell {
     // MARK: - Setup Constraints
     
     private func setupConstraints() {
-        
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20))
         }

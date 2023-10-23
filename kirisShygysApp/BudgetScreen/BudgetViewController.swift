@@ -8,10 +8,10 @@
 import UIKit
 import SnapKit
 
-class BudgetViewController: UIViewController {
+final class BudgetViewController: UIViewController {
     
     // MARK: - UI
-    private let monthLabel: UILabel = {
+    private lazy var monthLabel: UILabel = {
         let label = UILabel()
         label.text = "May"
         label.textColor = .white
@@ -20,24 +20,24 @@ class BudgetViewController: UIViewController {
         return label
     }()
     
-    let leftArrowImageView: UIImageView = {
+    private lazy var leftArrowImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "arrowLeft"))
         return imageView
     }()
     
-    let rightArrowImageView: UIImageView = {
+    private lazy var rightArrowImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "arrowRight"))
         return imageView
     }()
     
-    private let whiteView: UIView = {
+    private lazy var whiteView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 15
         return view
     }()
     
-    private let messageLabel: UILabel = {
+    private lazy var messageLabel: UILabel = {
         let label = UILabel()
         label.text = "You don't have a budget. Let's make one so you in control"
         label.textColor = .systemGray
@@ -47,7 +47,7 @@ class BudgetViewController: UIViewController {
         return label
     }()
     
-    private let createBudgetButton: UIButton = {
+    private lazy var createBudgetButton: UIButton = {
         let button = UIButton()
         button.setTitle("Create a budget", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -56,9 +56,9 @@ class BudgetViewController: UIViewController {
         return button
     }()
     
-    private let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    private lazy var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     
-    private var currentMonthIndex = 4
+    private lazy var currentMonthIndex = 4
     
     // MARK: - Lifecycle
     
@@ -67,7 +67,6 @@ class BudgetViewController: UIViewController {
         
         setupViews()
         setupConstraints()
-        
     }
     
     // MARK: - Setup Views
@@ -85,7 +84,6 @@ class BudgetViewController: UIViewController {
         rightArrowImageView.isUserInteractionEnabled = true
         let rightArrowTap = UITapGestureRecognizer(target: self, action: #selector(rightArrowButtonTapped))
         rightArrowImageView.addGestureRecognizer(rightArrowTap)
-        
     }
     
     // MARK: - Actions
