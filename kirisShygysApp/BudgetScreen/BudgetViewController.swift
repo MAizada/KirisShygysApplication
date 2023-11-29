@@ -8,7 +8,9 @@
 import UIKit
 import SnapKit
 
-final class BudgetViewController: UIViewController {
+final class BudgetViewController: UIViewController, BudgetViewProtocol {
+    
+    var presenter: BudgetPresenterProtocol?
     
     // MARK: - UI
     private lazy var monthLabel: UILabel = {

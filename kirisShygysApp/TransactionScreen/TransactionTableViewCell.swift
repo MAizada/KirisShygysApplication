@@ -101,7 +101,7 @@ class TransactionTableViewCell: UITableViewCell {
             make.top.equalTo(amountLabel.snp.bottom).offset(10)
             make.leading.equalTo(titleLabel)
             make.trailing.equalToSuperview().offset(-20)
-            make.bottom.lessThanOrEqualToSuperview().offset(-5) 
+            make.bottom.lessThanOrEqualToSuperview().offset(-5)
         }
     }
     
@@ -110,12 +110,20 @@ class TransactionTableViewCell: UITableViewCell {
     }
     
     func configure(with transaction: Transaction) {
-        transactionImageView.image = transaction.image
+        // transactionImageView.image = transaction.image
         titleLabel.text = transaction.title
         descriptionLabel.text = transaction.description
-        amountLabel.text = transaction.amount
-        amountLabel.textColor = UIColor(named: transaction.amountColorName)
-        dateLabel.text = transaction.time
-        }
-    }
+        amountLabel.text = "\(transaction.amount)"
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        dateLabel.text = dateFormatter.string(from: transaction.date)
+        switch transaction.type {
+           case .income:
+               amountLabel.textColor = UIColor(named: "green")
+           case .expense:
+               amountLabel.textColor = UIColor(named: "red")
+           }
+       }
+}
 

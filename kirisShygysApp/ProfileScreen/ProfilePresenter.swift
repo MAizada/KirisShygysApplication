@@ -6,3 +6,8 @@
 //
 
 import Foundation
+class ProfilePresenter: ProfilePresenterProtocol {
+    
+    let firebaseManager = FirebaseManager.shared
+    var view: ProfileViewProtocol?
+}

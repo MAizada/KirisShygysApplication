@@ -6,3 +6,10 @@
 //
 
 import Foundation
+protocol BudgetViewProtocol: AnyObject {
+
+}
+
+protocol BudgetPresenterProtocol: AnyObject {
+   
+}

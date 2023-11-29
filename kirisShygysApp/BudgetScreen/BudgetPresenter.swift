@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+class BudgetPresenter: BudgetPresenterProtocol {
+    
+    let firebaseManager = FirebaseManager.shared
+    var view: BudgetViewProtocol?
+}

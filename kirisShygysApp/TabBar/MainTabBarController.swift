@@ -21,21 +21,33 @@ final class MainTabBarController: UITabBarController {
         setValue(customTabBar, forKey: "tabBar")
         
         let homeViewController = HomeViewController()
+        let homePresenter = HomePresenter()
+        homePresenter.view = homeViewController
+        homeViewController.presenter = homePresenter
         let homeImage = UIImage(systemName: "house.fill")
         let homeTabBarItem = UITabBarItem(title: "Home", image: homeImage, tag: 0)
         homeViewController.tabBarItem = homeTabBarItem
         
         let transactionViewController = TransactionViewController()
+        let transactionPresenter = TransactionPresenter()
+        transactionPresenter.view = transactionViewController
+        transactionViewController.presenter = transactionPresenter
         let transactionImage = UIImage(systemName: "arrow.left.arrow.right")
         let transactionTabBarItem = UITabBarItem(title: "Transaction", image: transactionImage, tag: 1)
         transactionViewController.tabBarItem = transactionTabBarItem
         
         let budgetViewController = BudgetViewController()
+        let budgetPresenter = BudgetPresenter()
+        budgetPresenter.view = budgetViewController
+        budgetViewController.presenter = budgetPresenter
         let budgetImage = UIImage(systemName: "chart.pie.fill")
         let budgetTabBarItem = UITabBarItem(title: "Budget", image: budgetImage, tag: 3)
         budgetViewController.tabBarItem = budgetTabBarItem
         
         let profileViewController = ProfileViewController()
+        let profilePresenter = ProfilePresenter()
+        profilePresenter.view = profileViewController
+        profileViewController.presenter = profilePresenter
         let profileImage = UIImage(systemName: "person.fill")
         let profileTabBarItem = UITabBarItem(title: "Profile", image: profileImage, tag: 4)
         profileViewController.tabBarItem = profileTabBarItem
@@ -64,7 +76,7 @@ final class MainTabBarController: UITabBarController {
         let tabBarWidth = tabBar.frame.width
         let plusButtonSize: CGFloat = 70
         
-        plusButton.frame = CGRect(x: (tabBarWidth - buttonSize) / 2, y: tabBarHeight - buttonSize - 23, width: buttonSize, height: buttonSize)
+        plusButton.frame = CGRect(x: (tabBarWidth - buttonSize) / 2, y: tabBarHeight - buttonSize - 70, width: buttonSize, height: buttonSize)
         
         viewControllers = [homeNavigationController, transactionNavigationController, budgetNavigationController, profileNavigationController]
         

@@ -42,7 +42,7 @@ class ExpenseView: UIView {
     
     private lazy var amountLabelSecond: UILabel = {
         let label = UILabel()
-        label.text = "$1200"
+        label.text = "0"
         label.font = .boldSystemFont(ofSize: 22)
         label.textAlignment = .center
         label.textColor = .white

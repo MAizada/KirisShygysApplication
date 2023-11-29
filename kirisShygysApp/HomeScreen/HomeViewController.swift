@@ -8,7 +8,15 @@
 import UIKit
 import SnapKit
 
-final class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+final class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, HomeViewProtocol {
+    
+    var presenter: HomePresenterProtocol?
+   
+    private var transactions: [Transaction] = []
+    private var todayTransactions: [Transaction] = []
+    private var weekTransactions: [Transaction] = []
+    private var monthTransactions: [Transaction] = []
+    private var yearTransactions: [Transaction] = []
     
     // MARK: - UI
     
@@ -54,7 +62,7 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
     
     private lazy var moneyLabel: UILabel = {
         let label = UILabel()
-        label.text = "$9400"
+        label.text = "0"
         label.textAlignment = .center
         label.font = .boldSystemFont(ofSize: 40)
         return label
@@ -83,6 +91,7 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
         let segment = UISegmentedControl(items: items)
         segment.translatesAutoresizingMaskIntoConstraints = false
         segment.selectedSegmentIndex = 0
+        segment.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
         return segment
     }()
     
@@ -109,12 +118,6 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
         return tableView
     }()
     
-    private lazy var transactions: [Transaction] = [
-        Transaction(image: UIImage(named: "bag")!, title: "Shopping", description: "Buy some groceries", amount: "-$120", time: "10:30 AM", amountColorName: "red"),
-        Transaction(image: UIImage(named: "recurringBill")!, title: "Subscription", description: "Disney+ Annual...", amount: "-$80", time: "03:30 PM", amountColorName: "red"),
-        Transaction(image: UIImage(named: "restaurant")!, title: "Food", description: "Buy a ramen", amount: "-$32", time: "07:30 PM", amountColorName: "red"),
-    ]
-    
     private lazy var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     
     private var selectedMonthIndex: Int?
@@ -123,12 +126,16 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupViews()
         setupConstraints()
         setupNavigationBarItems()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter?.loadTransactionsFromFirebase()
+    }
+
     // MARK: - Setup Views
     
     private func setupViews() {
@@ -138,7 +145,6 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MonthCell")
         transactionTableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: "TransactionCell")
-        
     }
     
     // MARK: - Setup NavigationBarItems
@@ -165,6 +171,45 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
     @objc private func notificationButtonTapped() {
         let notificationVC = NotificationViewController()
         self.present(notificationVC, animated: true, completion: nil)
+    }
+    
+    @objc private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            presenter?.filterTransactions(forPeriod: .today)
+        case 1:
+            presenter?.filterTransactions(forPeriod: .thisWeek)
+        case 2:
+            presenter?.filterTransactions(forPeriod: .thisMonth)
+        case 3:
+            presenter?.filterTransactions(forPeriod: .thisYear)
+        default:
+            break
+        }
+    }
+    
+    func addTransaction(_ transaction: Transaction) {
+        presenter?.addTransaction(transaction)
+    }
+    
+    func reloadData(todayTransactions: [Transaction], weekTransactions: [Transaction], monthTransactions: [Transaction], yearTransactions: [Transaction]) {
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            transactions = todayTransactions
+        case 1:
+            transactions = weekTransactions
+        case 2:
+            transactions = monthTransactions
+        case 3:
+            transactions = yearTransactions
+        default:
+            break
+        }
+        transactionTableView.reloadData()
+    }
+    
+    func updateBalance(with balance: Double) {
+        moneyLabel.text = "\(balance)"
     }
     
     // MARK: - Setup Constraints
@@ -277,11 +322,41 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.textLabel?.text = months[indexPath.row]
             return cell
         } else if tableView == transactionTableView {
+            var currentTransactions: [Transaction] = []
+                    switch segmentedControl.selectedSegmentIndex {
+                    case 0:
+                        currentTransactions = todayTransactions
+                    case 1:
+                        currentTransactions = weekTransactions
+                    case 2:
+                        currentTransactions = monthTransactions
+                    case 3:
+                        currentTransactions = yearTransactions
+                    default:
+                        break
+                    }
+            print("IndexPath:", indexPath)
+            print("Current transactions count:", currentTransactions.count)
+            
+            guard indexPath.row < currentTransactions.count else {
+                       return UITableViewCell()
+                   }
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionCell", for: indexPath) as! TransactionTableViewCell
-            let transaction = transactions[indexPath.row]
+            let transaction = currentTransactions[indexPath.row]
             cell.configure(with: transaction)
             return cell
         }
         return UITableViewCell()
     }
+    
+    func updateTransactions(todayTransactions: [Transaction], weekTransactions: [Transaction], monthTransactions: [Transaction], yearTransactions: [Transaction]) {
+        self.todayTransactions = todayTransactions
+        self.weekTransactions = weekTransactions
+        self.monthTransactions = monthTransactions
+        self.yearTransactions = yearTransactions
+        
+        transactionTableView.reloadData()
+    }
 }
+

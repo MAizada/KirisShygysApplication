@@ -6,3 +6,10 @@
 //
 
 import Foundation
+protocol ProfileViewProtocol: AnyObject {
+
+}
+
+protocol ProfilePresenterProtocol: AnyObject {
+   
+}

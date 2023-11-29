@@ -10,6 +10,10 @@ import SnapKit
 
 final class IncomeViewController: UIViewController {
     
+    weak var delegate: IncomeViewProtocol?
+    let firebaseManager = FirebaseManager.shared
+    weak var updateDelegate: UpdateTableDelegate?
+    
     // MARK: - UI
     
     private lazy var howMuchLabel: UILabel = {
@@ -20,12 +24,13 @@ final class IncomeViewController: UIViewController {
         return label
     }()
     
-    private lazy var sumLabel: UILabel = {
-        let label = UILabel()
-        label.text = "0$"
-        label.font = UIFont.systemFont(ofSize: 64)
-        label.textColor = .white
-        return label
+    private lazy var sumTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "0"
+        textField.font = UIFont.systemFont(ofSize: 64)
+        textField.textColor = .white
+        textField.isUserInteractionEnabled = false
+        return textField
     }()
     
     private lazy var whiteView: UIView = {
@@ -40,10 +45,8 @@ final class IncomeViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Category"
         textField.borderStyle = .roundedRect
-        
         textField.rightView = categoryArrowButton
         textField.rightViewMode = .always
-        
         return textField
     }()
     
@@ -83,11 +86,6 @@ final class IncomeViewController: UIViewController {
     
     private func setupNavigationBar() {
         
-        let backButton = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(backButtonTapped))
-        backButton.tintColor = .white
-        
-        navigationItem.leftBarButtonItem = backButton
-        
         navigationItem.title = "Income"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
@@ -97,25 +95,73 @@ final class IncomeViewController: UIViewController {
     private func setupViews() {
         view.backgroundColor = UIColor(named: "green")
         
-        [howMuchLabel, sumLabel, whiteView].forEach { view.addSubview($0) }
+        [howMuchLabel, sumTextField, whiteView].forEach { view.addSubview($0) }
         [categoryTextField, categoryArrowButton, descriptionTextField, earnedButton].forEach { whiteView.addSubview($0) }
         
         earnedButton.addTarget(self, action: #selector(earnedButtonTapped), for: .touchUpInside)
+        sumTextField.isUserInteractionEnabled = true
     }
     
     // MARK: - Actions
     
     @objc private func earnedButtonTapped() {
-        print("Earned button tapped")
-    }
-    
-    @objc private func backButtonTapped() {
-        dismiss(animated: true, completion: nil)
+        let amount = sumTextField.text ?? ""
+        let category = categoryTextField.text ?? ""
+        let description = descriptionTextField.text ?? ""
+        
+        guard !category.isEmpty, !amount.isEmpty else {
+            return
+        }
+        let isIncomeCategory = Category.incomes.contains { $0.name == category }
+        let transactionType: TransactionType = isIncomeCategory ? .income : .expense
+        
+        let newTransaction = Transaction (
+            //  image:
+            title: category,
+            description: description,
+            amount: amount,
+            time: Date(),
+            date: Date(),
+            type: .income
+        )
+        
+        firebaseManager.saveTransaction(newTransaction) { error in
+            if let error = error {
+            } else {
+                self.sumTextField.text = ""
+                self.categoryTextField.text = ""
+                self.descriptionTextField.text = ""
+                
+                self.updateDelegate?.updateTransactions()
+                self.navigationController?.dismiss(animated: true)
+            }
+        }
     }
     
     @objc private func categoryArrowButtonTapped() {
         print("button tapped")
+        showIncomeCategoryOptions()
     }
+    
+    private func showIncomeCategoryOptions() {
+        let alert = UIAlertController(title: "Select an Income Category", message: nil, preferredStyle: .actionSheet)
+        
+        for category in Category.incomes {
+            let action = UIAlertAction(title: category.name, style: .default) { [weak self] _ in
+                self?.categoryTextField.text = category.name
+            }
+            alert.addAction(action)
+        }
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = categoryArrowButton
+            popoverController.sourceRect = categoryArrowButton.bounds
+        }
+        present(alert, animated: true, completion: nil)
+    }
+    
     
     // MARK: - Setup Constraints
     
@@ -127,16 +173,16 @@ final class IncomeViewController: UIViewController {
             make.height.equalTo(22)
         }
         
-        sumLabel.snp.makeConstraints { make in
+        sumTextField.snp.makeConstraints { make in
             make.leading.equalTo(view).offset(16)
             make.top.equalTo(howMuchLabel.snp.bottom).offset(10)
-            make.width.equalTo(102)
+            make.width.equalTo(300)
             make.height.equalTo(50)
         }
         
         whiteView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(view).inset(0)
-            make.top.equalTo(sumLabel.snp.bottom).offset(300)
+            make.top.equalTo(sumTextField.snp.bottom).offset(300)
             make.bottom.equalToSuperview().inset(0)
         }
         

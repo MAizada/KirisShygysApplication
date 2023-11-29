@@ -8,7 +8,9 @@
 import UIKit
 import SnapKit
 
-final class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+final class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ProfileViewProtocol {
+    
+    var presenter: ProfilePresenterProtocol?
     
     // MARK: - UI
     private lazy var avatarImage: UIImageView = {

@@ -43,7 +43,7 @@ class IncomeView: UIView {
     
     private lazy var amountLabel: UILabel = {
         let label = UILabel()
-        label.text = "$5000"
+        label.text = "0"
         label.font = .boldSystemFont(ofSize: 22)
         label.textAlignment = .center
         label.textColor = .white

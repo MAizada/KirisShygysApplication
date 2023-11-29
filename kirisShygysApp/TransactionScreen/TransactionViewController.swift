@@ -8,10 +8,19 @@
 import UIKit
 import SnapKit
 
-final class TransactionViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
+final class TransactionViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TransactionViewProtocol {
+    
+    var presenter: TransactionPresenterProtocol?
+    var updateRecentTransactions: (([Transaction]) -> Void)?
+    
+    var todayTransactions: [Transaction] = []
+    var yesterdayTransactions: [Transaction] = []
+    var previousTransactions: [Transaction] = []
+    
+    private var initialDataLoaded = false
     
     // MARK: - UI
-    private let monthButton: UIButton = {
+    private var monthButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "arrowDown"), for: .normal)
         button.setTitle(" Month", for: .normal)
@@ -19,14 +28,14 @@ final class TransactionViewController: UIViewController, UITableViewDelegate, UI
         return button
     }()
     
-    private let lineButton: UIButton = {
+    private var lineButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "line.3.horizontal.decrease"), for: .normal)
         button.tintColor = .black
         return button
     }()
     
-    private let financialReportTextField: UITextField = {
+    private var financialReportTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = UIColor(named: "linearGradient")
         textField.layer.cornerRadius = 10
@@ -35,30 +44,14 @@ final class TransactionViewController: UIViewController, UITableViewDelegate, UI
         return textField
     }()
     
-    private let rightArrowButton: UIButton = {
+    private var rightArrowButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "arrowRight"), for: .normal)
         button.tintColor = UIColor(named: "lightBrown")
         return button
     }()
     
-    private lazy var todayLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Today"
-        label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: 20)
-        return label
-    }()
-    
-    private lazy var yesterdayLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Yesterday"
-        label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: 20)
-        return label
-    }()
-    
-    private lazy var tableView: UITableView = {
+    private lazy var monthTableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -66,35 +59,16 @@ final class TransactionViewController: UIViewController, UITableViewDelegate, UI
         return tableView
     }()
     
-    private lazy var transactionTableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
         return tableView
     }()
     
-    private lazy var secondTransactionTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.delegate = self
-        tableView.dataSource = self
-        return tableView
-    }()
-    
-    private let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    private var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     
     private var selectedMonthIndex: Int?
-    
-    private let transactions: [Transaction] = [
-        Transaction(image: UIImage(named: "bag")!, title: "Shopping", description: "Buy some groceries", amount: "-$120", time: "10:30 AM", amountColorName: "red"),
-        Transaction(image: UIImage(named: "recurringBill")!, title: "Subscription", description: "Disney+ Annual...", amount: "-$80", time: "03:30 PM", amountColorName: "red"),
-        Transaction(image: UIImage(named: "restaurant")!, title: "Food", description: "Buy a ramen", amount: "-$32", time: "07:30 PM", amountColorName: "red"),
-    ]
-    
-    private let secondTransactions: [Transaction] = [
-        Transaction(image: UIImage(named: "salary")!, title: "Salary", description: "Salary for July", amount: "+$5000", time: "04:30 PM", amountColorName: "green"),
-        Transaction(image: UIImage(named: "car")!, title: "Transportation", description: "Charging Tesla", amount: "-$18", time: "08:30 PM", amountColorName: "red"),
-      
-    ]
     
     // MARK: - Lifecycle
     
@@ -103,38 +77,44 @@ final class TransactionViewController: UIViewController, UITableViewDelegate, UI
         setupViews()
         setupNavigationBarItems()
         setupConstraints()
-        
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter?.loadTransactionsFromFirebase()
+        }
+    
     
     // MARK: - Setup Views
     
     private func setupViews() {
         view.backgroundColor = .white
         
-        [monthButton, lineButton, financialReportTextField, rightArrowButton, todayLabel, yesterdayLabel, tableView, transactionTableView, secondTransactionTableView].forEach { view.addSubview($0) }
+        tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: "TransactionCell")
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MonthCell")
-        transactionTableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: "TransactionCell")
-        secondTransactionTableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: "TransactionCell")
+        [monthButton, lineButton, financialReportTextField, rightArrowButton, monthTableView, tableView].forEach { view.addSubview($0) }
         
-        monthButton.addTarget(self, action: #selector(monthButtonTapped), for: .touchUpInside)
-        lineButton.addTarget(self, action: #selector(lineButtonTapped), for: .touchUpInside)
-        rightArrowButton.addTarget(self, action: #selector(rightArrowButtonTapped), for: .touchUpInside)
+        monthTableView.register(UITableViewCell.self, forCellReuseIdentifier: "MonthCell")
+        monthTableView.isHidden = true
     }
     
     // MARK: - Setup NavigationBarItems
+    
     private func setupNavigationBarItems() {
         let monthButtonBarItem = UIBarButtonItem(customView: monthButton)
         let lineBarButtonItem = UIBarButtonItem(customView: lineButton)
         let centerSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
+        monthButton.addTarget(self, action: #selector(monthButtonTapped), for: .touchUpInside)
+        
         navigationItem.leftBarButtonItems = [monthButtonBarItem]
         navigationItem.rightBarButtonItems = [lineBarButtonItem]
     }
+    
     // MARK: - Actions
     
     @objc private func monthButtonTapped() {
-        tableView.isHidden.toggle()
+        monthTableView.isHidden.toggle()
     }
     
     @objc private func lineButtonTapped() {
@@ -143,6 +123,17 @@ final class TransactionViewController: UIViewController, UITableViewDelegate, UI
     
     @objc private func rightArrowButtonTapped() {
         print("rightArrowButtonTapped")
+    }
+    
+    func addTransaction(_ transaction: Transaction) {
+        presenter?.addTransaction(transaction)
+    }
+    
+    func reloadData(todayTransactions: [Transaction], yesterdayTransactions: [Transaction], previousTransactions: [Transaction]) {
+        self.todayTransactions = todayTransactions
+        self.yesterdayTransactions = yesterdayTransactions
+        self.previousTransactions = previousTransactions
+        tableView.reloadData()
     }
     
     // MARK: - Setup Constraints
@@ -161,87 +152,138 @@ final class TransactionViewController: UIViewController, UITableViewDelegate, UI
         }
         
         financialReportTextField.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(94)
+            make.top.equalToSuperview().offset(130)
             make.centerX.equalToSuperview()
             make.width.equalTo(375)
             make.height.equalTo(64)
         }
         
         rightArrowButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(94)
+            make.top.equalToSuperview().offset(130)
             make.trailing.equalToSuperview().offset(-16)
             make.height.equalTo(64)
         }
         
-        todayLabel.snp.makeConstraints { make in
-            make.top.equalTo(financialReportTextField).offset(70)
-            make.leading.equalToSuperview().offset(16)
-        }
-        
         tableView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(10)
+            make.top.equalTo(financialReportTextField.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(150)
+            make.height.equalTo(800)
         }
         
-        transactionTableView.snp.makeConstraints { make in
-            make.top.equalTo(todayLabel.snp.bottom).offset(10)
+        monthTableView.snp.makeConstraints { make in
+            make.top.equalTo(monthButton.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(200)
-        }
-        
-        yesterdayLabel.snp.makeConstraints { make in
-            make.top.equalTo(transactionTableView.snp.bottom).offset(10)
-            make.leading.equalToSuperview().offset(16)
-        }
-        
-        secondTransactionTableView.snp.makeConstraints { make in
-            make.top.equalTo(yesterdayLabel.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(200)
+            make.height.equalTo(500)
         }
     }
     
-    // MARK: - TableView Data Sourse and Delegate
+    // MARK: - TableView Data Source and Delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == self.tableView {
+        if tableView == monthTableView {
             return months.count
-        } else if tableView == transactionTableView {
-            return transactions.count
-        } else if tableView == secondTransactionTableView {
-            return secondTransactions.count
+        } else if tableView == self.tableView {
+            switch section {
+            case 0:
+                return todayTransactions.count
+            case 1:
+                return yesterdayTransactions.count
+            case 2:
+                return previousTransactions.count
+            default:
+                return 0
+            }
         }
         return 0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == self.tableView {
+        if tableView == monthTableView {
             if indexPath.row >= 0 && indexPath.row < months.count {
                 let selectedMonth = months[indexPath.row]
                 monthButton.setTitle(selectedMonth, for: .normal)
-                tableView.isHidden = true
+                monthTableView.isHidden = true
             }
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func numberOfSections(in tableView: UITableView) -> Int {
         if tableView == self.tableView {
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            return 3
+        }
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if tableView == self.tableView {
+            switch section {
+            case 0:
+                return "Today"
+            case 1:
+                return "Yesterday"
+            case 2:
+                return "Previous"
+            default:
+                return nil
+            }
+        }
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if tableView == monthTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MonthCell", for: indexPath)
             cell.textLabel?.text = months[indexPath.row]
             return cell
-        } else if tableView == transactionTableView {
+        } else if tableView == self.tableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionCell", for: indexPath) as! TransactionTableViewCell
-            let transaction = transactions[indexPath.row]
-            cell.configure(with: transaction)
-            return cell
-        } else if tableView == secondTransactionTableView {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionCell", for: indexPath) as! TransactionTableViewCell
-            let transaction = secondTransactions[indexPath.row]
-            cell.configure(with: transaction)
+            var transaction: Transaction?
+            switch indexPath.section {
+            case 0:
+                if indexPath.row < todayTransactions.count {
+                    cell.configure(with: todayTransactions[indexPath.row])
+                }
+            case 1:
+                if indexPath.row < yesterdayTransactions.count {
+                    cell.configure(with: yesterdayTransactions[indexPath.row])
+                }
+            case 2:
+                if indexPath.row < previousTransactions.count {
+                    cell.configure(with: previousTransactions[indexPath.row])
+                }
+            default:
+                break
+            }
+            if let transaction = transaction {
+                      cell.configure(with: transaction)
+                  }
             return cell
         }
         return UITableViewCell()
     }
+    
+    func updateRecentTransactions(_ transactions: [Transaction]) {
+        self.updateRecentTransactions?(transactions)
+    }
 }
 
+extension TransactionViewController: IncomeViewProtocol {
+    func didAddTransaction(amount: String, category: String, description: String, image: UIImage?, amountColorName: String) {
+        let newTransaction = Transaction(
+            //  image: image ?? UIImage(),
+            title: category,
+            description: description,
+            amount: amount,
+            time: Date(),
+            date: Date(),
+            type: .income
+        )
+        presenter?.addTransaction(newTransaction)
+    }
+}
+ 
+extension TransactionViewController: UpdateTableDelegate {
+    func updateTransactions() {
+        presenter?.loadTransactionsFromFirebase()
+    }
+}

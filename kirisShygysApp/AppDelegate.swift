@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,8 +14,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool { let homeViewController = HomeViewController()
-        let navigationController = UINavigationController(rootViewController: homeViewController)
-            window?.rootViewController = homeViewController
+        
+        FirebaseApp.configure()
+       let db = Firestore.firestore()
+
+//        let mainViewController = MainTabBarController()
+//        let navigationController = UINavigationController(rootViewController: mainViewController)
+//            window?.rootViewController = navigationController
+//            window?.makeKeyAndVisible()
+        
+    
+        let onboardingViewController = OnboardingViewController()
+        let navigationController = UINavigationController(rootViewController: onboardingViewController)
+            window?.rootViewController = navigationController
             window?.makeKeyAndVisible()
     
         return true
