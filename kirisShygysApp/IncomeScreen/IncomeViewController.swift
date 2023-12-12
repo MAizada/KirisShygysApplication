@@ -11,8 +11,8 @@ import SnapKit
 final class IncomeViewController: UIViewController {
     
     weak var delegate: IncomeViewProtocol?
-    let firebaseManager = FirebaseManager.shared
     weak var updateDelegate: UpdateTableDelegate?
+    var presenter: IncomePresenterProtocol?
     
     // MARK: - UI
     
@@ -80,6 +80,10 @@ final class IncomeViewController: UIViewController {
         setupNavigationBar()
         setupViews()
         setupConstraints()
+        
+        let presenter = IncomePresenter()
+        presenter.view = self
+        self.presenter = presenter
     }
     
     // MARK: - Setup Navigation Bar
@@ -109,37 +113,10 @@ final class IncomeViewController: UIViewController {
         let category = categoryTextField.text ?? ""
         let description = descriptionTextField.text ?? ""
         
-        guard !category.isEmpty, !amount.isEmpty else {
-            return
+        presenter?.earnedTransaction(amount: amount, category: category, description: description)
         }
-        let isIncomeCategory = Category.incomes.contains { $0.name == category }
-        let transactionType: TransactionType = isIncomeCategory ? .income : .expense
-        
-        let newTransaction = Transaction (
-            //  image:
-            title: category,
-            description: description,
-            amount: amount,
-            time: Date(),
-            date: Date(),
-            type: .income
-        )
-        
-        firebaseManager.saveTransaction(newTransaction) { error in
-            if let error = error {
-            } else {
-                self.sumTextField.text = ""
-                self.categoryTextField.text = ""
-                self.descriptionTextField.text = ""
-                
-                self.updateDelegate?.updateTransactions()
-                self.navigationController?.dismiss(animated: true)
-            }
-        }
-    }
     
     @objc private func categoryArrowButtonTapped() {
-        print("button tapped")
         showIncomeCategoryOptions()
     }
     
@@ -213,3 +190,12 @@ final class IncomeViewController: UIViewController {
     }
 }
 
+extension IncomeViewController: IncomeViewProtocol {
+    func didAddTransaction(amount: String, category: String, description: String, image: UIImage?, amountColorName: String) {
+        
+    }
+    
+    func dismissView() {
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+}

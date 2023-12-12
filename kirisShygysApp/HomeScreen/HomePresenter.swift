@@ -17,7 +17,10 @@ class HomePresenter: HomePresenterProtocol {
     var weekTransactions: [Transaction] = []
     var monthTransactions: [Transaction] = []
     var yearTransactions: [Transaction] = []
-     
+    
+    var incomeView: IncomeView?
+    var expenseView: ExpenseView?
+    
     private func calculateTotal(for type: TransactionType) -> Double {
         return allTransactions.reduce(0) { result, transaction in
             guard transaction.type == type,
@@ -25,37 +28,40 @@ class HomePresenter: HomePresenterProtocol {
             return result + amount
         }
     }
-
+    
     func loadTransactionsFromFirebase() {
         firebaseManager.loadTransactions { [weak self] transactions in
             guard let self = self else { return }
-
+            
             self.allTransactions = transactions
             self.separateTransactions()
-
+            
             guard let view = self.view else { return }
-
+            
             view.reloadData(
-                todayTransactions: self.todayTransactions ?? [],
-                weekTransactions: self.weekTransactions ?? [],
-                monthTransactions: self.monthTransactions ?? [],
-                yearTransactions: self.yearTransactions ?? []
+                todayTransactions: self.todayTransactions,
+                weekTransactions: self.weekTransactions,
+                monthTransactions: self.monthTransactions,
+                yearTransactions: self.yearTransactions
             )
-
+            
             self.filterTransactions(forPeriod: .today)
-
+            
             let totalIncome = self.calculateTotal(for: .income)
             let totalExpense = self.calculateTotal(for: .expense)
-
+            
             let balance = totalIncome - totalExpense
             view.updateBalance(with: balance)
-
+            
+            self.view?.updateIncome(amount: String(format: "%.2f", totalIncome))
+            self.view?.updateExpense(amount: String(format: "%.2f", totalExpense))
+            
             self.view?.updateTransactions(
-                       todayTransactions: self.todayTransactions,
-                       weekTransactions: self.weekTransactions,
-                       monthTransactions: self.monthTransactions,
-                       yearTransactions: self.yearTransactions
-                   )
+                todayTransactions: self.todayTransactions,
+                weekTransactions: self.weekTransactions,
+                monthTransactions: self.monthTransactions,
+                yearTransactions: self.yearTransactions
+            )
         }
     }
     
@@ -71,16 +77,16 @@ class HomePresenter: HomePresenterProtocol {
         let startOfYear = calendar.date(from: calendar.dateComponents([.year], from: currentDate))
         
         todayTransactions = allTransactions.filter { calendar.isDateInToday($0.date) }
-
+        
         weekTransactions = allTransactions.filter { calendar.dateInterval(of: .weekOfYear, for: $0.date)?.contains(currentDate) ?? false }
-
+        
         monthTransactions = allTransactions.filter { calendar.isDate($0.date, equalTo: startOfMonth ?? Date(), toGranularity: .month) }
-
+        
         yearTransactions = allTransactions.filter { calendar.isDate($0.date, equalTo: startOfYear ?? Date(), toGranularity: .year) }
-
+        
     }
-
-   
+    
+    
     func filterTransactions(forPeriod period: Period) {
         let currentDate = Date()
         let calendar = Calendar.current
@@ -120,8 +126,8 @@ class HomePresenter: HomePresenterProtocol {
             yearTransactions: yearTransactions
         )
     }
-
-
+    
+    
     func addTransaction(_ transaction: Transaction) {
         allTransactions.append(transaction)
         separateTransactions()
@@ -149,10 +155,37 @@ class HomePresenter: HomePresenterProtocol {
         self.yearTransactions = yearTransactions
         
         view?.reloadData(
-               todayTransactions: todayTransactions,
-               weekTransactions: weekTransactions,
-               monthTransactions: monthTransactions,
-               yearTransactions: yearTransactions
-           )
+            todayTransactions: todayTransactions,
+            weekTransactions: weekTransactions,
+            monthTransactions: monthTransactions,
+            yearTransactions: yearTransactions
+        )
     }
-}
+    
+    func updateBalance(transactions: [Transaction], currentBalance: Double, completion: @escaping (Double) -> Void) {
+        var newBalance = currentBalance
+        for transaction in transactions {
+            if let amount = Double(transaction.amount) {
+                newBalance += (transaction.type == .income) ? amount : -amount
+            }
+        }
+        
+        if let userId = Auth.auth().currentUser?.uid {
+            FirebaseManager.shared.updateBalance(for: userId, newBalance: newBalance) { responseCode in
+                if responseCode.code == 1 {
+                    print("Баланс успешно обновлен в Firebase: \(newBalance)")
+                    completion(newBalance)
+                } else {
+                    print("Ошибка при обновлении баланса в Firebase")
+                    completion(currentBalance)
+                }
+            }
+        } else {
+            print("UserId не найден")
+            completion(currentBalance)
+        }
+    }
+
+
+    }
+

@@ -41,10 +41,10 @@ class IncomeView: UIView {
         return label
     }()
     
-    private lazy var amountLabel: UILabel = {
+    var amountLabel: UILabel = {
         let label = UILabel()
         label.text = "0"
-        label.font = .boldSystemFont(ofSize: 22)
+        label.font = .boldSystemFont(ofSize: 18)
         label.textAlignment = .center
         label.textColor = .white
         return label
@@ -68,6 +68,10 @@ class IncomeView: UIView {
     
     private func setupViews() {
         [incomeView, rectangleView, incomeImage, incomeLabel, amountLabel].forEach { addSubview($0) }
+    }
+    
+    func updateIncome(amount: String) {
+        amountLabel.text = amount
     }
     
     // MARK: - Setup Constraints

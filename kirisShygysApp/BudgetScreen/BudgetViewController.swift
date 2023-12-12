@@ -91,7 +91,9 @@ final class BudgetViewController: UIViewController, BudgetViewProtocol {
     // MARK: - Actions
     
     @objc func createBudgetButtonTapped() {
-        print("createBudgetButtonTapped")
+        let alert = UIAlertController(title: nil, message: "You will be able to create a budget in the next version", preferredStyle: .alert)
+           alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+           present(alert, animated: true, completion: nil)
     }
     
     @objc func leftArrowButtonTapped() {

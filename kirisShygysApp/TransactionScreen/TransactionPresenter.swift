@@ -46,7 +46,7 @@ class TransactionPresenter: TransactionPresenterProtocol {
                 todayTransactions.append(transaction)
             } else if calendar.isDateInYesterday(transaction.date) {
                 yesterdayTransactions.append(transaction)
-            } else if transactionMonth == currentMonth {
+            } else {
                 previousTransactions.append(transaction)
             }
         }

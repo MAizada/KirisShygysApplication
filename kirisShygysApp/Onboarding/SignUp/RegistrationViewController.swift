@@ -8,10 +8,9 @@
 import UIKit
 import SnapKit
 
-final class RegistrationViewController: UIViewController {
+final class RegistrationViewController: UIViewController, RegistrationViewProtocol {
     
-    let firebaseManager = FirebaseManager.shared
-    var checkField = CheckField.shared
+    var presenter: RegistrationPresenterProtocol?
     
     // MARK: - Views
     
@@ -55,6 +54,7 @@ final class RegistrationViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "eye"), for: .normal)
         button.tintColor = .gray
+        button.addTarget(self, action: #selector(showPasswordButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -90,6 +90,8 @@ final class RegistrationViewController: UIViewController {
         return stackView
     }()
     
+    private var isPasswordVisible = false
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -97,6 +99,53 @@ final class RegistrationViewController: UIViewController {
         setupViews()
         setupConstraints()
         setupNavigation()
+        setupPresenter()
+    }
+    
+    private func setupPresenter() {
+        let presenter = RegistrationPresenter()
+        presenter.view = self
+        self.presenter = presenter
+    }
+    
+    // MARK: - Registration View Protocol functions
+    
+    func getEmailTextFieldValue() -> String? {
+        return emailTextField.text
+    }
+    
+    func getPasswordTextFieldValue() -> String? {
+        return passwordTextField.text
+    }
+    
+    func showEmptyFieldsError() {
+        let alert = UIAlertController(title: "", message: "Please enter your email and password", preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "Ок", style: .default)
+        alert.addAction(okButton)
+        present(alert, animated: true)
+    }
+    
+    func showErrorMessage(_ message: String) {
+        let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "Ок", style: .default)
+        alert.addAction(okButton)
+        present(alert, animated: true)
+    }
+    
+    func showSuccessMessage(_ message: String) {
+        let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "Ok", style: .default) { _ in
+            self.dismiss(animated: true, completion: nil)
+            self.clearTextFields()
+        }
+        alert.addAction(okButton)
+        present(alert, animated: true)
+    }
+    
+    private func clearTextFields() {
+        nameTextField.text = ""
+        emailTextField.text = ""
+        passwordTextField.text = ""
     }
     
     // MARK: - Actions
@@ -108,43 +157,17 @@ final class RegistrationViewController: UIViewController {
     }
     
     @objc func signUpButtonTap() {
-        guard let email = emailTextField.text?.lowercased(),
-              let password = passwordTextField.text,
-              !email.isEmpty, !password.isEmpty else {
-            let alert = UIAlertController(title: "", message: "Please enter your email and password", preferredStyle: .alert)
-            let okButton = UIAlertAction(title: "Ок", style: .default)
-            alert.addAction(okButton)
-            present(alert, animated: true)
-            return
-        }
-
-        firebaseManager.createNewUser(LoginField(email: email, password: password)) { code in
-            switch code.code {
-            case 0:
-                let alert = UIAlertController(title: "", message: "Please enter your email and password", preferredStyle: .alert)
-                let okButton = UIAlertAction(title: "Ок", style: .default)
-                alert.addAction(okButton)
-                self.present(alert, animated: true)
-                
-            case 1:
-                let alert = UIAlertController(title: "", message: "Congratulations! You have registered", preferredStyle: .alert)
-                let okButton = UIAlertAction(title: "Ok", style: .default) { _ in
-                    // Закрываем текущий экран или выполняем действие, которое нужно после регистрации
-                    // Например, выполнение перехода на другой экран или закрытие этого
-                    self.dismiss(animated: true, completion: nil)
-                }
-                alert.addAction(okButton)
-                self.present(alert, animated: true)
-                
-            default:
-                print("Unknown error")
-            }
-        }
+        presenter?.signUp()
     }
-
     
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func showPasswordButtonTapped() {
+        isPasswordVisible.toggle()
+        passwordTextField.isSecureTextEntry = !isPasswordVisible
+        showPasswordButton.isSelected = isPasswordVisible
     }
     
     // MARK: - Setup Views
@@ -199,9 +222,9 @@ final class RegistrationViewController: UIViewController {
         
         showPasswordButton.snp.makeConstraints { make in
             make.width.equalTo(24)
-               make.height.equalTo(24)
-               make.centerY.equalTo(passwordTextField)
-               make.trailing.equalTo(passwordTextField).offset(-20)
+            make.height.equalTo(24)
+            make.centerY.equalTo(passwordTextField)
+            make.trailing.equalTo(passwordTextField).offset(-20)
         }
         
         signUpButton.snp.makeConstraints { make in make.centerX.equalToSuperview()
@@ -215,7 +238,5 @@ final class RegistrationViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.top.equalTo(signUpButton.snp.bottom).offset(16)
         }
-       
     }
 }
-

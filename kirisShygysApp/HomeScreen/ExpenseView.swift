@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class ExpenseView: UIView {
-
+    
     // MARK: - UI
     private lazy var expensesView: UIView = {
         let view = UIView()
@@ -40,10 +40,10 @@ class ExpenseView: UIView {
         return label
     }()
     
-    private lazy var amountLabelSecond: UILabel = {
+     var amountLabelSecond: UILabel = {
         let label = UILabel()
         label.text = "0"
-        label.font = .boldSystemFont(ofSize: 22)
+        label.font = .boldSystemFont(ofSize: 18)
         label.textAlignment = .center
         label.textColor = .white
         return label
@@ -69,6 +69,11 @@ class ExpenseView: UIView {
         rectangleViewSecond.addSubview(expenseImage)
         expensesView.addSubview(expenseLabel)
         expensesView.addSubview(amountLabelSecond)
+    }
+    
+    
+    func updateExpense(amount: String) {
+        amountLabelSecond.text = amount
     }
     
     // MARK: - Setup Constraints

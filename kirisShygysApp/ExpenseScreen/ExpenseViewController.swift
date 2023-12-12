@@ -13,6 +13,7 @@ final class ExpenseViewController: UIViewController {
     weak var delegate: ExpenseViewProtocol?
     let firebaseManager = FirebaseManager.shared
     weak var updateDelegate: UpdateTableDelegate?
+    var presenter: ExpensePresenterProtocol?
     
     // MARK: - UI
     
@@ -75,19 +76,20 @@ final class ExpenseViewController: UIViewController {
         return button
     }()
     
-    private let categories = ["Shopping", "Food", "Transportation", "Salary", "Subscription", "Other"]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
         setupViews()
         setupConstraints()
+        
+        let presenter = ExpensePresenter()
+        presenter.view = self
+        self.presenter = presenter
     }
     
     // MARK: - Setup Navigation Bar
     
     private func setupNavigationBar() {
-       
         navigationItem.title = "Expense"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
@@ -111,31 +113,7 @@ final class ExpenseViewController: UIViewController {
         let category = categoryTextField.text ?? ""
         let description = descriptionTextField.text ?? ""
         
-        guard !category.isEmpty, !amount.isEmpty else {
-            return
-        }
-        
-        let newTransaction = Transaction(
-            //  image:
-            title: category,
-            description: description,
-            amount: amount,
-            time: Date(),
-            date: Date(),
-            type: .expense
-        )
-        
-        firebaseManager.saveTransaction(newTransaction) { error in
-            if let error = error {
-            } else {
-                self.sumTextField.text = ""
-                self.categoryTextField.text = ""
-                self.descriptionTextField.text = ""
-                
-                self.updateDelegate?.updateTransactions()
-                self.navigationController?.dismiss(animated: true)
-            }
-        }
+        presenter?.spentTransaction(amount: amount, category: category, description: description)
     }
     
     @objc private func categoryArrowButtonTapped() {
@@ -213,3 +191,12 @@ final class ExpenseViewController: UIViewController {
     }
 }
 
+extension ExpenseViewController: ExpenseViewProtocol {
+    func didAddTransaction(amount: String, category: String, description: String, image: UIImage?, amountColorName: String) {
+        
+    }
+    
+    func dismissView() {
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+}

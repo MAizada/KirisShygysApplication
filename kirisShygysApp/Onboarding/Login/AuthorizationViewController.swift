@@ -8,10 +8,11 @@
 import UIKit
 import SnapKit
 
-final class AuthorizationViewController: UIViewController {
+final class AuthorizationViewController: UIViewController, AuthorizationViewProtocol {
     
     let firebaseManager = FirebaseManager.shared
     var checkField = CheckField.shared
+    var presenter: AuthorizationPresenterProtocol?
     
     var userDefault = UserDefaults.standard
     
@@ -95,6 +96,45 @@ final class AuthorizationViewController: UIViewController {
         setupViews()
         setupConstraints()
         setupNavigation()
+        setupPresenter()
+    }
+    
+    private func setupPresenter() {
+        let presenter = AuthorizationPresenter()
+        presenter.delegate = self
+        presenter.view = self
+        self.presenter = presenter
+    }
+    
+    //MARK: - AuthorizationViewProtocol functions
+    
+    func getEmailTextFieldValue() -> String? {
+        return emailTextField.text
+    }
+    
+    func getPasswordTextFieldValue() -> String? {
+        return passwordTextField.text
+    }
+    
+    func showEmptyFieldsError() {
+        let alert = UIAlertController(title: "", message: "Please enter both email and password", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func showErrorMessage(_ message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func showSuccessMessage(_ message: String) {
+        let alert = UIAlertController(title: "Success", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Actions
@@ -106,58 +146,20 @@ final class AuthorizationViewController: UIViewController {
     }
     
     @objc private func showPasswordTapped() {
-        isPasswordVisible.toggle() 
+        isPasswordVisible.toggle()
         passwordTextField.isSecureTextEntry = !isPasswordVisible
         showPasswordButton.isSelected = isPasswordVisible
     }
     
     @objc func loginButtonTap() {
-
-        if checkField.isValidEmail(email: emailTextField.text!) {
-            
-               let authData = LoginField(email: emailTextField.text!, password: passwordTextField.text!)
-            
-               firebaseManager.authInApp(authData) { [weak self] responce in
-                   switch responce {
-                       
-                   case .success:
-                       self?.userDefault.set(true, forKey: "isLogin")
-                       if let navigationController = self?.navigationController {
-                               let mainTabBarController = MainTabBarController()
-                               navigationController.setViewControllers([mainTabBarController], animated: true)
-                           } else {
-                               let mainTabBarController = MainTabBarController()
-                               self?.present(mainTabBarController, animated: true, completion: nil)
-                           }
-
-
-                   case .noVerify:
-                       let alert = self?.alertAction("Error", "You haven't verified your email. A link has been sent to your email!")
-                       let verifyButton = UIAlertAction(title: "Ok", style: .default)
-                       alert?.addAction(verifyButton)
-                       self?.present(alert!, animated: true)
-
-                   case .error:
-                       let alert = self?.alertAction("Error", "Email or password is incorrect")
-                       let verifyButton = UIAlertAction(title: "Ok", style: .default)
-                       alert?.addAction(verifyButton)
-                       self?.present(alert!, animated: true)
-                   }
-               }
-            
-           } else {
-               let alert = self.alertAction("Error", "Check the entered data")
-               let verifyButton = UIAlertAction(title: "Ok", style: .default)
-               alert.addAction(verifyButton)
-               self.present(alert, animated: true)
-           }
+        presenter?.authorize()
     }
     
     func alertAction(_ header: String?, _ message: String?) -> UIAlertController {
         let alert = UIAlertController(title: header, message: message, preferredStyle: .alert)
         return alert
     }
-
+    
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
@@ -226,4 +228,16 @@ final class AuthorizationViewController: UIViewController {
     }
 }
 
-
+extension AuthorizationViewController: AuthorizationPresenterDelegate {
+    func didAuthorizeSuccessfully() {
+        let mainVC = MainTabBarController()
+        navigationController?.setViewControllers([mainVC], animated: true)
+    }
+    
+    func didFailToAuthorize() {
+        let alert = UIAlertController(title: "Error", message: "Failed to log in", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
+}

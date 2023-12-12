@@ -23,7 +23,7 @@ struct ResponseCode {
 struct CurrentUser {
     var id: String
     var email: String
-    //var balance: 
+    var balance: Double
 }
 
 struct User {
@@ -77,6 +77,7 @@ struct Category {
            Categories(name: "Food", imageUrl: "foodImageURL", categoryId: "foodCategoryID", type: .expense),
            Categories(name: "Transportations", imageUrl: "transportationsImageURL", categoryId: "transportationsCategoryID", type: .expense),
            Categories(name: "Subscription", imageUrl: "subscriptionImageURL", categoryId: "subscriptionCategoryID", type: .expense),
+        Categories(name: "Other", imageUrl: "otherImageURL", categoryId: "otherCategoryID", type: .expense)
     ]
        static let incomes = [
            Categories(name: "Salary", imageUrl: "salaryImageURL", categoryId: "salaryCategoryID", type: .income),

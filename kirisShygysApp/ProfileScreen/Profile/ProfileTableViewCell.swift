@@ -1,5 +1,5 @@
 //
-//  SettingsTableViewCell.swift
+//  ProfileTableViewCell.swift
 //  kirisShygysApp
 //
 //  Created by Aizada on 12.10.2023.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class SettingsTableViewCell: UITableViewCell {
+class ProfileTableViewCell: UITableViewCell {
     
     // MARK: - UI
     
@@ -17,16 +17,22 @@ class SettingsTableViewCell: UITableViewCell {
         return view
     }()
     
-   public var iconImageView: UIImageView = {
+    public var iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
-   public var titleLabel: UILabel = {
+    public var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         return label
+    }()
+    
+    public var actionButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "arrowRight"), for: .normal)
+        return button
     }()
     
     // MARK: - Lifecycle
@@ -47,6 +53,7 @@ class SettingsTableViewCell: UITableViewCell {
         contentView.addSubview(containerView)
         contentView.addSubview(iconImageView)
         contentView.addSubview(titleLabel)
+        contentView.addSubview(actionButton)
     }
     
     // MARK: - Setup Constraints
@@ -65,6 +72,11 @@ class SettingsTableViewCell: UITableViewCell {
             make.leading.equalTo(iconImageView.snp.trailing).offset(20)
             make.trailing.equalToSuperview()
             make.centerY.equalTo(iconImageView)
+        }
+        
+        actionButton.snp.makeConstraints { make in
+            make.trailing.equalTo(containerView).offset(-10)
+            make.centerY.equalTo(containerView)
         }
     }
 }

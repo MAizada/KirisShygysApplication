@@ -10,6 +10,7 @@ import SnapKit
 
 final class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ProfileViewProtocol {
     
+    
     var presenter: ProfilePresenterProtocol?
     
     // MARK: - UI
@@ -31,7 +32,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     
     private lazy var additionalInfoLabel: UILabel = {
         let label = UILabel()
-        label.text = "Kiris Shygys"
+        label.text = ""
         label.font = .boldSystemFont(ofSize: 16)
         label.textAlignment = .center
         return label
@@ -53,6 +54,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         table.delegate = self
         table.dataSource = self
         table.tableFooterView = UIView()
+        table.layer.cornerRadius = 5
         return table
     }()
     
@@ -61,7 +63,6 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         SettingsItem(image: UIImage(named: "logout")!, title: "Logout")
     ]
     
-    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -69,6 +70,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         
         setupViews()
         setupConstraints()
+        getUserName()
     }
     
     // MARK: - Setup Views
@@ -76,11 +78,20 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     private func setupViews() {
         view.backgroundColor = .white
         [avatarImage, usernameLabel, additionalInfoLabel, editButton, tableView].forEach { view.addSubview($0) }
-        tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: "SettingsCell")
+        tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: "SettingsCell")
     }
     
     @objc private func editButtonTapped() {
         print("editButtonTapped")
+    }
+    
+    //MARK: - Get Usaername
+    
+    private func getUserName() {
+        FirebaseManager.shared.getUsername { [weak self] username in
+               guard let username = username else { return }
+               self?.additionalInfoLabel.text = username
+           }
     }
     
     // MARK: - Setup Constraints
@@ -108,9 +119,10 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         }
         
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(additionalInfoLabel.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().offset(20)
-            make.height.equalTo(200)
+            make.top.equalTo(additionalInfoLabel.snp.bottom).offset(30)
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.height.equalTo(90)
         }
     }
     
@@ -121,14 +133,73 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! SettingsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as! ProfileTableViewCell
         let item = settingsData[indexPath.row]
         cell.iconImageView.image = item.image
         cell.titleLabel.text = item.title
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if indexPath.row == 0 {
+            let settingsViewController = SettingsViewController()
+            settingsViewController.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(settingsViewController, animated: true)
+        } else if indexPath.row == 1 {
+            let confirmationView = ConfirmationView(frame: CGRect(x: 0, y: view.frame.height - 400, width: UIScreen.main.bounds.width, height: 200))
+            confirmationView.delegate = self
+            view.addSubview(confirmationView)
+        }
+    }
 }
 
-
-
+extension ProfileViewController: ConfirmationViewDelegate {
+    
+    func presentCustomView(_ customView: UIView) {
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
+            alertController.view.addSubview(customView)
+            let height = NSLayoutConstraint(item: alertController.view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200)
+            alertController.view.addConstraint(height)
+            
+            let confirmAction = UIAlertAction(title: "Yes", style: .default) { _ in
+                if let confirmationView = customView as? ConfirmationView {
+                    confirmationView.delegate?.didConfirmLogout()
+                }
+            }
+            alertController.addAction(confirmAction)
+            
+            let cancelAction = UIAlertAction(title: "No", style: .cancel) { _ in
+                if let confirmationView = customView as? ConfirmationView {
+                    confirmationView.delegate?.didCancelLogout()
+                }
+            }
+            alertController.addAction(cancelAction)
+            
+            present(alertController, animated: true, completion: nil)
+        }
+    
+    func didConfirmLogout() {
+        print("Confirmed logout")
+        FirebaseManager.shared.Logout { error in
+            if let error = error {
+                print("Error signing out: \(error.localizedDescription)")
+                // Обработка ошибки, если необходимо
+            } else {
+                print("Logout successful")
+                let onboardingViewController = OnboardingViewController()
+                onboardingViewController.navigationItem.hidesBackButton = true
+                UIApplication.shared.windows.first?.rootViewController = onboardingViewController
+            }
+        }
+    }
+    
+    func didCancelLogout() {
+        if let confirmationView = view.subviews.first(where: { $0 is ConfirmationView }) {
+            confirmationView.removeFromSuperview()
+            print("Cancelled logout")
+        }
+    }
+}
 

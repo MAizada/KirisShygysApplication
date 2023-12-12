@@ -35,7 +35,9 @@ class FirebaseManager {
                 if result != nil {
                     let userId = result?.user.uid
                     let email = data.email
-                    let data: [String: Any] = ["email": email]
+                    let initialBalance: Double = 0.0
+                    
+                    let data: [String: Any] = ["email": email, "balance": initialBalance]
                     
                     Firestore.firestore().collection("users").document(userId!).setData(data)
                     completion(ResponseCode(code: 1))
@@ -73,14 +75,36 @@ class FirebaseManager {
                             let data = document.data()
                             let userId = document.documentID
                             let email = data["email"] as! String
+                            let balance = data["balance"] as? Double ?? 0.0
                             
-                            currentUsers.append(CurrentUser(id: userId, email: email))
+                            currentUsers.append(CurrentUser(id: userId, email: email, balance: balance))
                         }
                     }
                     completion(currentUsers)
                 }
             }
     }
+    
+    func getUsername(completion: @escaping (String?) -> Void) {
+        if let currentUser = Auth.auth().currentUser {
+            let username = currentUser.displayName
+            completion(username)
+        } else {
+            completion(nil)
+        }
+    }
+    
+    //MARK: Logout
+    
+    public func Logout(completion: @escaping (Error?) -> ()) {
+        do {
+            try Auth.auth().signOut()
+            completion(nil)
+        } catch let error {
+            completion(error)
+        }
+    }
+    
     
     
     // MARK: - Transactions
@@ -124,42 +148,44 @@ class FirebaseManager {
                     } else if let documents = snapshot?.documents {
                         var fetchedTransactions: [Transaction] = []
                         for document in documents {
-                                let timestamp = document.data()["date"] as? Timestamp
-                                let date = timestamp?.dateValue()
-                                
-                                let typeString = document.data()["type"] as? String ?? "" // Получаем строку с типом транзакции из Firestore
+                            let timestamp = document.data()["date"] as? Timestamp
+                            let date = timestamp?.dateValue()
                             
+                            let typeString = document.data()["type"] as? String ?? "" // Получаем строку с типом транзакции из Firestore
                             // Преобразуем строку в тип TransactionType
-                                let transactionType: TransactionType = typeString == "income" ? .income : .expense
-                                
-                                let transaction = Transaction(
-                                    title: document.data()["title"] as? String ?? "",
-                                    description: document.data()["description"] as? String ?? "",
-                                    amount: document.data()["amount"] as? String ?? "",
-                                    time: document.data()["time"] as? Date ?? Date(),
-                                    date: date ?? Date(),
-                                    type: transactionType
-                                )
+                            let transactionType: TransactionType = typeString == "income" ? .income : .expense
+                            
+                            let transaction = Transaction(
+                                title: document.data()["title"] as? String ?? "",
+                                description: document.data()["description"] as? String ?? "",
+                                amount: document.data()["amount"] as? String ?? "",
+                                time: document.data()["time"] as? Date ?? Date(),
+                                date: date ?? Date(),
+                                type: transactionType
+                            )
                             fetchedTransactions.append(transaction)
-                            }
-                        self.allTransactions.append(contentsOf: fetchedTransactions)
-                                         completion(fetchedTransactions)
                         }
+                        self.allTransactions.append(contentsOf: fetchedTransactions)
+                        completion(fetchedTransactions)
                     }
                 }
         }
-    
-    
-    func updateBalance(transactions: [Transaction], completion: @escaping (Double) -> Void) {
-        var balance = 0.0
-        for transaction in transactions {
-            if let amount = Double(transaction.amount) {
-                balance += amount
-            }
-        }
-        completion(balance)
     }
     
+    func updateBalance(for userId: String, newBalance: Double, completion: @escaping (ResponseCode) -> Void) {
+        let db = Firestore.firestore()
+        let userDocRef = db.collection("users").document(userId)
+        
+        userDocRef.updateData(["balance": newBalance]) { error in
+            if let error = error {
+                print("Ошибка при обновлении баланса: \(error.localizedDescription)")
+                completion(ResponseCode(code: 0))
+            } else {
+                print("Баланс успешно обновлен в Firestore")
+                completion(ResponseCode(code: 1))
+            }
+        }
+    }
 }
 
 

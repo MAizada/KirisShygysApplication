@@ -107,7 +107,7 @@ final class OnboardingViewController: UIViewController {
         let registrationVC = RegistrationViewController()
         navigationController?.pushViewController(registrationVC, animated: true)
     }
-
+    
     @objc private func loginButtonTapped() {
         let authVC = AuthorizationViewController()
         navigationController?.pushViewController(authVC, animated: true)
