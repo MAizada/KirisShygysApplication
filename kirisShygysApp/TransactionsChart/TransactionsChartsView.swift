@@ -8,31 +8,25 @@
 import UIKit
 
 class TransactionsChartView: UIView {
-    private var incomeTransactions: [Transaction] = []
-    private var expenseTransactions: [Transaction] = []
+    
+    var chartPresenter: HomePresenterProtocol?
+    var incomeTransactions: [Transaction] = []
+    var expenseTransactions: [Transaction] = []
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         drawChart()
     }
     
-    var transactions = [Transactions]()
-    
-    //убоать отсюда
-    func updateTransactions() {
-        FirebaseManager.shared.loadTransactions { [weak self] transactions in
-            self?.incomeTransactions = transactions.filter { $0.type == .income }
-            self?.expenseTransactions = transactions.filter { $0.type == .expense }
-
-            // Trigger a redraw of the chart view
-            self?.setNeedsDisplay()
-            print("Transactions updated from Firebase")
-        }
-    }
+    func updateChartView(with incomeTransactions: [Transaction], expenseTransactions: [Transaction]) {
+        self.incomeTransactions = incomeTransactions
+        self.expenseTransactions = expenseTransactions
+        setNeedsDisplay() 
+       }
     
     private func drawIncomePath(_ incomePoints: [CGPoint]) {
         let incomePath = UIBezierPath()
-        incomePath.lineWidth = 5.0
+        incomePath.lineWidth = 3.5
         
         if let greenColor = UIColor(named: "green") {
             greenColor.setStroke()
@@ -47,20 +41,19 @@ class TransactionsChartView: UIView {
                 let startPoint = incomePoints[i]
                 let endPoint = incomePoints[i + 1]
                 
-                let controlPoint1 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.7, y: startPoint.y)
-                let controlPoint2 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.7, y: endPoint.y)
+                let controlPoint1 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.5, y: startPoint.y)
+                let controlPoint2 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.5, y: endPoint.y)
                 
                 incomePath.addCurve(to: endPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
             }
         }
-        
         incomePath.lineCapStyle = .round
         incomePath.stroke()
     }
-
+    
     private func drawExpensePath(_ expensePoints: [CGPoint]) {
         let expensePath = UIBezierPath()
-        expensePath.lineWidth = 5.0
+        expensePath.lineWidth = 3.5
         
         if let redColor = UIColor(named: "red") {
             redColor.setStroke()
@@ -78,8 +71,8 @@ class TransactionsChartView: UIView {
             let startPoint = point
             let endPoint = expensePoints[index + 1]
             
-            let controlPoint1 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.7, y: startPoint.y)
-            let controlPoint2 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.7, y: endPoint.y)
+            let controlPoint1 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.5, y: startPoint.y)
+            let controlPoint2 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.5, y: endPoint.y)
             
             expensePath.addCurve(to: endPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
         }
@@ -87,15 +80,13 @@ class TransactionsChartView: UIView {
         expensePath.lineCapStyle = .round
         expensePath.stroke()
     }
-
+    
     private func drawChart() {
         let incomePoints = calculatePointsForTransactions(incomeTransactions)
         let expensePoints = calculatePointsForTransactions(expenseTransactions)
-
         drawIncomePath(incomePoints)
         drawExpensePath(expensePoints)
     }
-
     
     private func calculatePointsForTransactions(_ transactions: [Transaction]) -> [CGPoint] {
         let spacing = bounds.width / CGFloat(transactions.count - 1)
@@ -109,7 +100,7 @@ class TransactionsChartView: UIView {
     }
     
     private func mapValueToYCoordinate(value: Double) -> CGFloat {
-        let maxValue: Double = 1000.0
+        let maxValue: Double = 1500.0
         let normalizedValue = min(max(value, 0), maxValue)
         let y = bounds.height - (bounds.height * CGFloat(normalizedValue) / CGFloat(maxValue))
         return y

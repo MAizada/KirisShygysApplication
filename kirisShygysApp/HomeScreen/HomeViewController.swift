@@ -12,6 +12,7 @@ import Firebase
 final class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, HomeViewProtocol {
     
     var presenter: HomePresenterProtocol?
+    
     private var transactions: [Transaction] = []
     private var todayTransactions: [Transaction] = []
     private var weekTransactions: [Transaction] = []
@@ -19,31 +20,6 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
     private var yearTransactions: [Transaction] = []
     
     // MARK: - UI
-    
-    private lazy var avatarImage: UIImageView = {
-        let image =  UIImageView()
-        image.image = UIImage(named: "Avatar")
-        image.contentMode = .left
-        image.layer.cornerRadius = 25
-        return image
-    }()
-    
-    private lazy var arrowButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "arrowDown"), for: .normal)
-        button.contentMode = .center
-        button.addTarget(self, action: #selector(arrowButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var monthLabel: UILabel = {
-        let label = UILabel()
-        label.text = "October"
-        label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: 14)
-        label.isUserInteractionEnabled = true
-        return label
-    }()
     
     private lazy var notificationButton: UIButton = {
         let button = UIButton()
@@ -86,10 +62,11 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
         return label
     }()
     
-    private lazy var transactionsChartView: TransactionsChartView = {
+    internal lazy var transactionsChartView: TransactionsChartView = {
         let chartView = TransactionsChartView()
+        chartView.chartPresenter = presenter
         chartView.backgroundColor = .clear
-     //   chartView.transactions = 
+        
         return chartView
     }()
     
@@ -110,24 +87,12 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
         return label
     }()
     
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.isHidden = true
-        return tableView
-    }()
-    
     private lazy var transactionTableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
         return tableView
     }()
-    
-    private lazy var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    
-    private var selectedMonthIndex: Int?
     
     // MARK: - Lifecycle
     
@@ -136,12 +101,12 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
         setupViews()
         setupConstraints()
         setupNavigationBarItems()
+        setupPresenter()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         presenter?.loadTransactionsFromFirebase()
-        transactionsChartView.updateTransactions()
     }
     
     // MARK: - Setup Views
@@ -149,9 +114,8 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
     private func setupViews() {
         view.backgroundColor = UIColor(named: "linearGradient")
         
-        [avatarImage, arrowButton, monthLabel, notificationButton, accountBalanceLabel, moneyLabel, incomeView, expenseView, spendFrequencyLabel, transactionsChartView, segmentedControl, resentLabel, tableView, transactionTableView].forEach { view.addSubview($0) }
+        [notificationButton, accountBalanceLabel, moneyLabel, incomeView, expenseView, spendFrequencyLabel, transactionsChartView, segmentedControl, resentLabel, transactionTableView].forEach { view.addSubview($0) }
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MonthCell")
         transactionTableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: "TransactionCell")
     }
     
@@ -159,29 +123,28 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
     
     private func setupNavigationBarItems() {
         let notificationBarButtonItem = UIBarButtonItem(customView: notificationButton)
-        let arrowBarButtonItem = UIBarButtonItem(customView: arrowButton)
         let centerSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
-        navigationItem.rightBarButtonItems = [notificationBarButtonItem, arrowBarButtonItem]
+        navigationItem.rightBarButtonItems = [notificationBarButtonItem]
         
         notificationButton.addTarget(self, action: #selector(notificationButtonTapped), for: .touchUpInside)
-        arrowButton.addTarget(self, action: #selector(arrowButtonTapped), for: .touchUpInside)
         
         let centerSpaceBarButtonItem2 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     }
     
-    // MARK: - Actions
-    
-    @objc private func arrowButtonTapped() {
-        tableView.isHidden.toggle()
+    private func setupPresenter() {
+        presenter = HomePresenter()
+        presenter?.view = self
     }
+    
+    // MARK: - Actions
     
     @objc private func notificationButtonTapped() {
         let animation = CAKeyframeAnimation(keyPath: "transform.rotation")
-           animation.values = [-0.1,0.1, -0.05, 0.05, -0.04, 0.04, 0]
-           animation.duration = 0.9
-           animation.repeatCount = 3
-           self.notificationButton.layer.add(animation, forKey: nil)
+        animation.values = [-0.1,0.1, -0.05, 0.05, -0.04, 0.04, 0]
+        animation.duration = 0.9
+        animation.repeatCount = 3
+        self.notificationButton.layer.add(animation, forKey: nil)
         
         let notificationVC = NotificationViewController()
         self.present(notificationVC, animated: true, completion: nil)
@@ -231,7 +194,6 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
             return
         }
         presenter?.updateBalance(transactions: transactions, currentBalance: balance) { newBalance in
-            // print("Баланс обновлен: \(newBalance)")
         }
     }
     
@@ -243,29 +205,31 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
         expenseView.amountLabelSecond.text = "\(amount)"
     }
     
+    func updateChartView(with incomeTransactions: [Transaction], expenseTransactions: [Transaction]) {
+        
+        guard !incomeTransactions.isEmpty || !expenseTransactions.isEmpty else {
+            print("Данные для обновления графика пусты")
+            return
+        }
+        transactionsChartView.updateChartView(with: incomeTransactions, expenseTransactions: expenseTransactions)
+        transactionsChartView.incomeTransactions = incomeTransactions
+        transactionsChartView.expenseTransactions = expenseTransactions
+        transactionsChartView.setNeedsDisplay()
+    }
+    
+    func updateTransactions(todayTransactions: [Transaction], weekTransactions: [Transaction], monthTransactions: [Transaction], yearTransactions: [Transaction]) {
+        self.todayTransactions = todayTransactions
+        self.weekTransactions = weekTransactions
+        self.monthTransactions = monthTransactions
+        self.yearTransactions = yearTransactions
+        transactionTableView.reloadData()
+    }
+    
     // MARK: - Setup Constraints
     
     private func setupConstraints() {
-        avatarImage.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(56)
-            make.leading.equalToSuperview().offset(16)
-            make.width.height.equalTo(32)
-        }
-        
-        arrowButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(56)
-            make.trailing.equalTo(monthLabel).offset(-60)
-            make.width.equalTo(40)
-        }
-        
-        monthLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(56)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(18)
-        }
-        
         notificationButton.snp.makeConstraints { make in
-            make.centerY.equalTo(avatarImage.snp.centerY)
+            make.centerY.equalTo(accountBalanceLabel.snp.centerY)
             make.trailing.equalToSuperview().offset(-16)
             make.width.height.equalTo(32)
         }
@@ -320,12 +284,6 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
             make.leading.equalToSuperview().offset(20)
         }
         
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(monthLabel.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(450)
-        }
-        
         transactionTableView.snp.makeConstraints { make in
             make.top.equalTo(resentLabel.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().offset(0)
@@ -336,30 +294,11 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - TableView Data Sourse and Delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == self.tableView {
-            return months.count
-        } else if tableView == transactionTableView {
-            return transactions.count
-        }
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == self.tableView {
-            if indexPath.row >= 0 && indexPath.row < months.count {
-                let selectedMonth = months[indexPath.row]
-                monthLabel.text = selectedMonth
-                tableView.isHidden = true
-            }
-        }
+        return transactions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if tableView == self.tableView {
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.textLabel?.text = months[indexPath.row]
-            return cell
-        } else if tableView == transactionTableView {
+        if tableView == transactionTableView {
             var currentTransactions: [Transaction] = []
             switch segmentedControl.selectedSegmentIndex {
             case 0:
@@ -373,8 +312,6 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
             default:
                 break
             }
-            //    print("IndexPath:", indexPath)
-            //    print("Current transactions count:", currentTransactions.count)
             
             guard indexPath.row < currentTransactions.count else {
                 return UITableViewCell()
@@ -386,16 +323,6 @@ final class HomeViewController: UIViewController, UITableViewDelegate, UITableVi
             return cell
         }
         return UITableViewCell()
-    }
-    
-    func updateTransactions(todayTransactions: [Transaction], weekTransactions: [Transaction], monthTransactions: [Transaction], yearTransactions: [Transaction]) {
-        self.todayTransactions = todayTransactions
-        self.weekTransactions = weekTransactions
-        self.monthTransactions = monthTransactions
-        self.yearTransactions = yearTransactions
-        
-        //allTransactions = chart.transactions
-        transactionTableView.reloadData()
     }
 }
 

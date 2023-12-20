@@ -10,13 +10,17 @@ import Firebase
 
 class HomePresenter: HomePresenterProtocol {
     
-    let firebaseManager = FirebaseManager.shared
     weak var view: HomeViewProtocol?
+    let firebaseManager = FirebaseManager.shared
     var allTransactions: [Transaction] = []
     var todayTransactions: [Transaction] = []
     var weekTransactions: [Transaction] = []
     var monthTransactions: [Transaction] = []
     var yearTransactions: [Transaction] = []
+    
+    var incomeTransactions: [Transaction] = []
+    var expenseTransactions: [Transaction] = []
+    var chartView: TransactionsChartView?
     
     var incomeView: IncomeView?
     var expenseView: ExpenseView?
@@ -32,36 +36,43 @@ class HomePresenter: HomePresenterProtocol {
     func loadTransactionsFromFirebase() {
         firebaseManager.loadTransactions { [weak self] transactions in
             guard let self = self else { return }
-            
+                  
             self.allTransactions = transactions
             self.separateTransactions()
             
-            guard let view = self.view else { return }
-            
-            view.reloadData(
-                todayTransactions: self.todayTransactions,
-                weekTransactions: self.weekTransactions,
-                monthTransactions: self.monthTransactions,
-                yearTransactions: self.yearTransactions
-            )
-            
-            self.filterTransactions(forPeriod: .today)
-            
             let totalIncome = self.calculateTotal(for: .income)
             let totalExpense = self.calculateTotal(for: .expense)
-            
             let balance = totalIncome - totalExpense
-            view.updateBalance(with: balance)
             
-            self.view?.updateIncome(amount: String(format: "%.2f", totalIncome))
-            self.view?.updateExpense(amount: String(format: "%.2f", totalExpense))
-            
-            self.view?.updateTransactions(
-                todayTransactions: self.todayTransactions,
-                weekTransactions: self.weekTransactions,
-                monthTransactions: self.monthTransactions,
-                yearTransactions: self.yearTransactions
-            )
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                
+                self.incomeTransactions = transactions.filter { $0.type == .income }
+                self.expenseTransactions = transactions.filter { $0.type == .expense }
+                
+                self.view?.updateChartView(with: self.incomeTransactions, expenseTransactions: self.expenseTransactions)
+
+                self.updateTransactionsAndCharts(
+                    todayTransactions: self.todayTransactions,
+                    weekTransactions: self.weekTransactions,
+                    monthTransactions: self.monthTransactions,
+                    yearTransactions: self.yearTransactions,
+                    incomeTransactions: self.incomeTransactions,
+                    expenseTransactions: self.expenseTransactions,
+                    in: self.chartView ?? TransactionsChartView()
+                )
+
+                self.view?.reloadData(
+                    todayTransactions: self.todayTransactions,
+                    weekTransactions: self.weekTransactions,
+                    monthTransactions: self.monthTransactions,
+                    yearTransactions: self.yearTransactions
+                )
+                
+                self.view?.updateBalance(with: balance)
+                self.view?.updateIncome(amount: String(format: "%.2f", totalIncome))
+                self.view?.updateExpense(amount: String(format: "%.2f", totalExpense))
+            }
         }
     }
     
@@ -77,15 +88,10 @@ class HomePresenter: HomePresenterProtocol {
         let startOfYear = calendar.date(from: calendar.dateComponents([.year], from: currentDate))
         
         todayTransactions = allTransactions.filter { calendar.isDateInToday($0.date) }
-        
         weekTransactions = allTransactions.filter { calendar.dateInterval(of: .weekOfYear, for: $0.date)?.contains(currentDate) ?? false }
-        
         monthTransactions = allTransactions.filter { calendar.isDate($0.date, equalTo: startOfMonth ?? Date(), toGranularity: .month) }
-        
         yearTransactions = allTransactions.filter { calendar.isDate($0.date, equalTo: startOfYear ?? Date(), toGranularity: .year) }
-        
     }
-    
     
     func filterTransactions(forPeriod period: Period) {
         let currentDate = Date()
@@ -105,7 +111,6 @@ class HomePresenter: HomePresenterProtocol {
         }
         
         guard let dateInterval = interval else { return }
-        
         let filteredTransactions = allTransactions.filter { dateInterval.contains($0.date) }
         
         switch period {
@@ -127,7 +132,6 @@ class HomePresenter: HomePresenterProtocol {
         )
     }
     
-    
     func addTransaction(_ transaction: Transaction) {
         allTransactions.append(transaction)
         separateTransactions()
@@ -139,13 +143,26 @@ class HomePresenter: HomePresenterProtocol {
         )
     }
     
-    func updateTransactions(todayTransactions: [Transaction], weekTransactions: [Transaction], monthTransactions: [Transaction], yearTransactions: [Transaction]) {
+    func updateTransactionsAndCharts(
+        todayTransactions: [Transaction],
+        weekTransactions: [Transaction],
+        monthTransactions: [Transaction],
+        yearTransactions: [Transaction],
+        incomeTransactions: [Transaction],
+        expenseTransactions: [Transaction],
+        in chartView: TransactionsChartView
+    ) {
+        
         view?.updateTransactions(
             todayTransactions: todayTransactions,
             weekTransactions: weekTransactions,
             monthTransactions: monthTransactions,
             yearTransactions: yearTransactions
         )
+
+        chartView.incomeTransactions = incomeTransactions
+        chartView.expenseTransactions = expenseTransactions
+        chartView.setNeedsDisplay()
     }
     
     func reloadData(todayTransactions: [Transaction], weekTransactions: [Transaction], monthTransactions: [Transaction], yearTransactions: [Transaction]) {
@@ -185,7 +202,5 @@ class HomePresenter: HomePresenterProtocol {
             completion(currentBalance)
         }
     }
-
-
-    }
+}
 
