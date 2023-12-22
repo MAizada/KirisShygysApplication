@@ -73,7 +73,6 @@ class TransactionsChartView: UIView {
             
             let controlPoint1 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.5, y: startPoint.y)
             let controlPoint2 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.5, y: endPoint.y)
-            
             expensePath.addCurve(to: endPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
         }
         
@@ -81,28 +80,37 @@ class TransactionsChartView: UIView {
         expensePath.stroke()
     }
     
+    private func findMaxValues() -> (Double, Double) {
+        let maxIncome = incomeTransactions.compactMap { Double($0.amount) }.max() ?? 0.0
+        let maxExpense = expenseTransactions.compactMap { Double($0.amount) }.max() ?? 0.0
+        return (maxIncome, maxExpense)
+    }
+    
     private func drawChart() {
-        let incomePoints = calculatePointsForTransactions(incomeTransactions)
-        let expensePoints = calculatePointsForTransactions(expenseTransactions)
+        
+        let (maxIncome, maxExpense) = findMaxValues()
+        let maxAmount = max(maxIncome, maxExpense) + 100
+        
+        let incomePoints = calculatePointsForTransactions(incomeTransactions, maxValue: maxAmount)
+        let expensePoints = calculatePointsForTransactions(expenseTransactions, maxValue: maxAmount)
         drawIncomePath(incomePoints)
         drawExpensePath(expensePoints)
     }
     
-    private func calculatePointsForTransactions(_ transactions: [Transaction]) -> [CGPoint] {
-        let spacing = bounds.width / CGFloat(transactions.count - 1)
+    private func calculatePointsForTransactions(_ transactions: [Transaction],  maxValue: Double) -> [CGPoint] {
+        let spacing = bounds.width / max(CGFloat(transactions.count - 1), 1.0)
         var points: [CGPoint] = []
         for (index, transaction) in transactions.enumerated() {
             let x = spacing * CGFloat(index)
-            let y = mapValueToYCoordinate(value: Double(transaction.amount) ?? 0)
+            let y = mapValueToYCoordinate(value: Double(transaction.amount) ?? 0,  maxValue: maxValue)
             points.append(CGPoint(x: x, y: y))
         }
         return points
     }
     
-    private func mapValueToYCoordinate(value: Double) -> CGFloat {
-        let maxValue: Double = 1500.0
+    private func mapValueToYCoordinate(value: Double, maxValue: Double) -> CGFloat {
         let normalizedValue = min(max(value, 0), maxValue)
         let y = bounds.height - (bounds.height * CGFloat(normalizedValue) / CGFloat(maxValue))
-        return y
+       return max(min(y, bounds.height), 0)
     }
 }
