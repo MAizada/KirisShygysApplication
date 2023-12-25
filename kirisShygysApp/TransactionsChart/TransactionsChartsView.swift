@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TransactionsChartView: UIView {
+final class TransactionsChartView: UIView {
     
     var chartPresenter: HomePresenterProtocol?
     var incomeTransactions: [Transaction] = []
@@ -21,18 +21,15 @@ class TransactionsChartView: UIView {
     func updateChartView(with incomeTransactions: [Transaction], expenseTransactions: [Transaction]) {
         self.incomeTransactions = incomeTransactions
         self.expenseTransactions = expenseTransactions
-        setNeedsDisplay() 
-       }
+        setNeedsDisplay()
+    }
     
     private func drawIncomePath(_ incomePoints: [CGPoint]) {
         let incomePath = UIBezierPath()
         incomePath.lineWidth = 3.5
         
-        if let greenColor = UIColor(named: "green") {
-            greenColor.setStroke()
-        } else {
-            UIColor.green.setStroke()
-        }
+        let greenColor = UIColor(named: "green")
+        greenColor?.setStroke()
         
         incomePath.move(to: incomePoints.first ?? .zero)
         
@@ -63,19 +60,17 @@ class TransactionsChartView: UIView {
         
         expensePath.move(to: expensePoints.first ?? .zero)
         
-        for (index, point) in expensePoints.enumerated() {
-            guard index + 1 < expensePoints.count else {
-                break
+        for i in 0 ..< expensePoints.count {
+            if i + 1 < expensePoints.count {
+                let startPoint = expensePoints[i]
+                let endPoint = expensePoints[i + 1]
+                
+                let controlPoint1 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.5, y: startPoint.y)
+                let controlPoint2 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.5, y: endPoint.y)
+                
+                expensePath.addCurve(to: endPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
             }
-            
-            let startPoint = point
-            let endPoint = expensePoints[index + 1]
-            
-            let controlPoint1 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.5, y: startPoint.y)
-            let controlPoint2 = CGPoint(x: startPoint.x + (endPoint.x - startPoint.x) * 0.5, y: endPoint.y)
-            expensePath.addCurve(to: endPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
         }
-        
         expensePath.lineCapStyle = .round
         expensePath.stroke()
     }
@@ -84,17 +79,6 @@ class TransactionsChartView: UIView {
         let maxIncome = incomeTransactions.compactMap { Double($0.amount) }.max() ?? 0.0
         let maxExpense = expenseTransactions.compactMap { Double($0.amount) }.max() ?? 0.0
         return (maxIncome, maxExpense)
-    }
-    
-    private func drawChart() {
-        
-        let (maxIncome, maxExpense) = findMaxValues()
-        let maxAmount = max(maxIncome, maxExpense) + 100
-        
-        let incomePoints = calculatePointsForTransactions(incomeTransactions, maxValue: maxAmount)
-        let expensePoints = calculatePointsForTransactions(expenseTransactions, maxValue: maxAmount)
-        drawIncomePath(incomePoints)
-        drawExpensePath(expensePoints)
     }
     
     private func calculatePointsForTransactions(_ transactions: [Transaction],  maxValue: Double) -> [CGPoint] {
@@ -111,6 +95,18 @@ class TransactionsChartView: UIView {
     private func mapValueToYCoordinate(value: Double, maxValue: Double) -> CGFloat {
         let normalizedValue = min(max(value, 0), maxValue)
         let y = bounds.height - (bounds.height * CGFloat(normalizedValue) / CGFloat(maxValue))
-       return max(min(y, bounds.height), 0)
+        return max(min(y, bounds.height), 0)
+    }
+    
+    private func drawChart() {
+        
+        let (maxIncome, maxExpense) = findMaxValues()
+        let maxAmount = max(maxIncome, maxExpense) + 100
+        
+        let incomePoints = calculatePointsForTransactions(incomeTransactions, maxValue: maxAmount)
+        let expensePoints = calculatePointsForTransactions(expenseTransactions, maxValue: maxAmount)
+        
+        drawIncomePath(incomePoints)
+        drawExpensePath(expensePoints)
     }
 }
