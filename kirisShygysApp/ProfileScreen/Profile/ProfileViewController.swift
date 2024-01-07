@@ -10,8 +10,7 @@ import SnapKit
 
 final class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ProfileViewProtocol {
     
-    
-    var presenter: ProfilePresenterProtocol?
+   weak var presenter: ProfilePresenterProtocol?
     
     // MARK: - UI
     private lazy var avatarImage: UIImageView = {
@@ -70,7 +69,8 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         
         setupViews()
         setupConstraints()
-        getUserName()
+        presenter?.getUserName()
+        setupPresenter()
     }
     
     // MARK: - Setup Views
@@ -85,13 +85,20 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         print("editButtonTapped")
     }
     
-    //MARK: - Get Usaername
+    func showUserName(_ userName: String) {
+           additionalInfoLabel.text = userName
+       }
     
-    private func getUserName() {
-        FirebaseManager.shared.getUsername { [weak self] username in
-               guard let username = username else { return }
-               self?.additionalInfoLabel.text = username
-           }
+    func showSettings() {
+        print("Inside showSettingsView method")
+        let settingsViewController = SettingsViewController()
+        settingsViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+    
+    private func setupPresenter() {
+        presenter = ProfilePresenter()
+        presenter?.view = self
     }
     
     // MARK: - Setup Constraints
@@ -140,20 +147,16 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        if indexPath.row == 0 {
-            let settingsViewController = SettingsViewController()
-            settingsViewController.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(settingsViewController, animated: true)
-        } else if indexPath.row == 1 {
-            let confirmationView = ConfirmationView(frame: CGRect(x: 0, y: view.frame.height - 400, width: UIScreen.main.bounds.width, height: 200))
-            confirmationView.delegate = self
-            view.addSubview(confirmationView)
-        }
+   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+          tableView.deselectRow(at: indexPath, animated: true)
+          
+          if indexPath.row == 0 {
+              showSettings()
+          } else if indexPath.row == 1 {
+              presenter?.confirmLogout()
+          }
+      }
     }
-}
 
 extension ProfileViewController: ConfirmationViewDelegate {
     
@@ -185,7 +188,6 @@ extension ProfileViewController: ConfirmationViewDelegate {
         FirebaseManager.shared.Logout { error in
             if let error = error {
                 print("Error signing out: \(error.localizedDescription)")
-                // Обработка ошибки, если необходимо
             } else {
                 print("Logout successful")
                 let onboardingViewController = OnboardingViewController()
@@ -202,4 +204,3 @@ extension ProfileViewController: ConfirmationViewDelegate {
         }
     }
 }
-

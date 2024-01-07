@@ -10,7 +10,7 @@ import SnapKit
 
 class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    private let settingsData = ["Currency", "Language", "Theme", "Notification", "About", "Help"]
+    private let settingsData = ["Currency", "Language", "Notification"]
     private let currencies = ["USD", "KZ", "RB"]
     
     private lazy var settingsLabel: UILabel = {
@@ -78,18 +78,9 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         case "Language":
             let languageSelectionVC = LanguageViewController()
             navigationController?.pushViewController(languageSelectionVC, animated: true)
-        case "Theme":
-            let themeSelectionVC = ThemeViewController()
-            navigationController?.pushViewController(themeSelectionVC, animated: true)
         case "Notification":
             let notificationSelectionVC = NotificationSettingsViewController()
             navigationController?.pushViewController(notificationSelectionVC, animated: true)
-        case "About":
-            let aboutSelectionVC = AboutViewController()
-            navigationController?.pushViewController(aboutSelectionVC, animated: true)
-        case "Help":
-            let helpSelectionVC = HelpViewController()
-            navigationController?.pushViewController(helpSelectionVC, animated: true)
         default:
             break
         }

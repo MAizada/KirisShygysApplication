@@ -35,9 +35,6 @@
 		2E4957A72B20D2F8004BE02B /* TransactionsChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4957A62B20D2F8004BE02B /* TransactionsChartsView.swift */; };
 		2E4957D52B2247EC004BE02B /* CurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4957D42B2247EC004BE02B /* CurrencyViewController.swift */; };
 		2E4957D72B224EC2004BE02B /* LanguageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4957D62B224EC2004BE02B /* LanguageViewController.swift */; };
-		2E4957D92B224ECF004BE02B /* ThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4957D82B224ECF004BE02B /* ThemeViewController.swift */; };
-		2E4957DB2B224EDD004BE02B /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4957DA2B224EDD004BE02B /* AboutViewController.swift */; };
-		2E4957DD2B224EE8004BE02B /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4957DC2B224EE8004BE02B /* HelpViewController.swift */; };
 		2E4957DF2B224FDF004BE02B /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4957DE2B224FDF004BE02B /* NotificationSettingsViewController.swift */; };
 		2E4957E12B235112004BE02B /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4957E02B235111004BE02B /* SettingsTableViewCell.swift */; };
 		2E5059372AFE93C100FF877F /* TransactionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5059362AFE93C100FF877F /* TransactionPresenter.swift */; };
@@ -114,9 +111,6 @@
 		2E4957A62B20D2F8004BE02B /* TransactionsChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsChartsView.swift; sourceTree = "<group>"; };
 		2E4957D42B2247EC004BE02B /* CurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewController.swift; sourceTree = "<group>"; };
 		2E4957D62B224EC2004BE02B /* LanguageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageViewController.swift; sourceTree = "<group>"; };
-		2E4957D82B224ECF004BE02B /* ThemeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeViewController.swift; sourceTree = "<group>"; };
-		2E4957DA2B224EDD004BE02B /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
-		2E4957DC2B224EE8004BE02B /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		2E4957DE2B224FDF004BE02B /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		2E4957E02B235111004BE02B /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		2E5059362AFE93C100FF877F /* TransactionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPresenter.swift; sourceTree = "<group>"; };
@@ -277,10 +271,7 @@
 				2E7708EC2B1F208900868CB6 /* SettingsViewController.swift */,
 				2E4957E02B235111004BE02B /* SettingsTableViewCell.swift */,
 				2E4957D62B224EC2004BE02B /* LanguageViewController.swift */,
-				2E4957D82B224ECF004BE02B /* ThemeViewController.swift */,
 				2E4957DE2B224FDF004BE02B /* NotificationSettingsViewController.swift */,
-				2E4957DA2B224EDD004BE02B /* AboutViewController.swift */,
-				2E4957DC2B224EE8004BE02B /* HelpViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -540,7 +531,6 @@
 				2E4957DF2B224FDF004BE02B /* NotificationSettingsViewController.swift in Sources */,
 				2E548B742AA4EDD7008635FF /* MainTabBarController.swift in Sources */,
 				2E6DD6A92B1DD9B60088434A /* FinancialReportViewController.swift in Sources */,
-				2E4957DB2B224EDD004BE02B /* AboutViewController.swift in Sources */,
 				2E3DCEBA2AD3063100BFDC19 /* CustomTabBar.swift in Sources */,
 				D884DC102A90ED8600B7D89A /* AppDelegate.swift in Sources */,
 				2EC3A4FF2B17A94000AA147B /* AuthorizationContract.swift in Sources */,
@@ -558,7 +548,6 @@
 				2E3DCEAB2ACEC32E00BFDC19 /* TransactionTableViewCell.swift in Sources */,
 				2E3DCEC02AD85B3800BFDC19 /* NotificationTableViewCell.swift in Sources */,
 				2E5FA05C2AFABBFD00989A15 /* Document.swift in Sources */,
-				2E4957DD2B224EE8004BE02B /* HelpViewController.swift in Sources */,
 				2E4957A72B20D2F8004BE02B /* TransactionsChartsView.swift in Sources */,
 				2ECC2C642B0FD1E600FE4D61 /* CheckField.swift in Sources */,
 				2E3DCEF82ADDA94800BFDC19 /* ProfilePresenter.swift in Sources */,
@@ -574,7 +563,6 @@
 				2E6DD6B82B1E423C0088434A /* FinancialReportContract.swift in Sources */,
 				2E548B7B2AA4EE57008635FF /* BudgetViewController.swift in Sources */,
 				2ECC2C602B0F3C6800FE4D61 /* RegistrationViewController.swift in Sources */,
-				2E4957D92B224ECF004BE02B /* ThemeViewController.swift in Sources */,
 				2E3DCEB82AD1D60600BFDC19 /* ExpenseView.swift in Sources */,
 				2E45E6122AF1545D00148305 /* HomeModel.swift in Sources */,
 				2E6DD6AD2B1E13620088434A /* GreenCell.swift in Sources */,

@@ -31,7 +31,8 @@ class ProfileTableViewCell: UITableViewCell {
     
     public var actionButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "arrowRight"), for: .normal)
+        button.setImage(UIImage(systemName: "chevron.compact.right"), for: .normal)
+        button.tintColor = .black
         return button
     }()
     
