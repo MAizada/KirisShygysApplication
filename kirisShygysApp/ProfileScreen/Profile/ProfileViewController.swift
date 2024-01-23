@@ -10,7 +10,7 @@ import SnapKit
 
 final class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ProfileViewProtocol {
     
-   weak var presenter: ProfilePresenterProtocol?
+    var presenter: ProfilePresenterProtocol?
     
     // MARK: - UI
     private lazy var avatarImage: UIImageView = {
@@ -66,13 +66,15 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupViews()
         setupConstraints()
-        presenter?.getUserName()
         setupPresenter()
     }
     
+    private func setupPresenter() {
+        presenter = ProfilePresenter()
+        presenter?.view = self
+    }
     // MARK: - Setup Views
     
     private func setupViews() {
@@ -85,20 +87,30 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         print("editButtonTapped")
     }
     
-    func showUserName(_ userName: String) {
-           additionalInfoLabel.text = userName
-       }
-    
     func showSettings() {
-        print("Inside showSettingsView method")
         let settingsViewController = SettingsViewController()
         settingsViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
-    private func setupPresenter() {
-        presenter = ProfilePresenter()
-        presenter?.view = self
+    func showLogoutConfirmation() {
+        let alertController = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+            self?.presenter?.logout(completion: { result in
+            self?.presenter?.handleLogoutResult(result: result)
+            })
+        }
+        let cancelAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func navigateToOnboarding() {
+        let onboardingViewController = OnboardingViewController()
+        let navigationController = UINavigationController(rootViewController: onboardingViewController)
+        UIApplication.shared.keyWindow?.rootViewController = navigationController
+        UIApplication.shared.keyWindow?.makeKeyAndVisible()
     }
     
     // MARK: - Setup Constraints
@@ -131,6 +143,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             make.trailing.equalToSuperview().offset(-10)
             make.height.equalTo(90)
         }
+        
     }
     
     // MARK: - UITableViewDataSource
@@ -147,60 +160,14 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         return cell
     }
     
-   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-          tableView.deselectRow(at: indexPath, animated: true)
-          
-          if indexPath.row == 0 {
-              showSettings()
-          } else if indexPath.row == 1 {
-              presenter?.confirmLogout()
-          }
-      }
-    }
-
-extension ProfileViewController: ConfirmationViewDelegate {
-    
-    func presentCustomView(_ customView: UIView) {
-            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
-            alertController.view.addSubview(customView)
-            let height = NSLayoutConstraint(item: alertController.view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200)
-            alertController.view.addConstraint(height)
-            
-            let confirmAction = UIAlertAction(title: "Yes", style: .default) { _ in
-                if let confirmationView = customView as? ConfirmationView {
-                    confirmationView.delegate?.didConfirmLogout()
-                }
-            }
-            alertController.addAction(confirmAction)
-            
-            let cancelAction = UIAlertAction(title: "No", style: .cancel) { _ in
-                if let confirmationView = customView as? ConfirmationView {
-                    confirmationView.delegate?.didCancelLogout()
-                }
-            }
-            alertController.addAction(cancelAction)
-            
-            present(alertController, animated: true, completion: nil)
-        }
-    
-    func didConfirmLogout() {
-        print("Confirmed logout")
-        FirebaseManager.shared.Logout { error in
-            if let error = error {
-                print("Error signing out: \(error.localizedDescription)")
-            } else {
-                print("Logout successful")
-                let onboardingViewController = OnboardingViewController()
-                onboardingViewController.navigationItem.hidesBackButton = true
-                UIApplication.shared.windows.first?.rootViewController = onboardingViewController
-            }
-        }
-    }
-    
-    func didCancelLogout() {
-        if let confirmationView = view.subviews.first(where: { $0 is ConfirmationView }) {
-            confirmationView.removeFromSuperview()
-            print("Cancelled logout")
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if indexPath.row == 0 {
+            showSettings()
+        } else if indexPath.row == 1 {
+            showLogoutConfirmation()
         }
     }
 }
+

@@ -16,13 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool { let homeViewController = HomeViewController()
         
         FirebaseApp.configure()
-       let db = Firestore.firestore()
-
-//        let mainViewController = MainTabBarController()
-//        let navigationController = UINavigationController(rootViewController: mainViewController)
-//            window?.rootViewController = navigationController
-//            window?.makeKeyAndVisible()
-        
+       let db = Firestore.firestore()        
     
         let onboardingViewController = OnboardingViewController()
         let navigationController = UINavigationController(rootViewController: onboardingViewController)

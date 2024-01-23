@@ -6,12 +6,20 @@
 //
 
 import Foundation
+import UIKit
+
 protocol ProfileViewProtocol: AnyObject {
-    func showUserName(_ userName: String)
+    func showLogoutConfirmation()
+    func navigateToOnboarding()
 }
 
 protocol ProfilePresenterProtocol: AnyObject {
     var view: ProfileViewProtocol? { get set }
-    func getUserName()
+    func logout(completion: @escaping (Result<(), Error>) -> ())
+    func handleLogoutResult(result: Result<(), Error>) 
+}
+
+protocol ConfirmLogoutViewDelegate: AnyObject {
     func confirmLogout()
+   
 }

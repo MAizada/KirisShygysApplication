@@ -17,7 +17,6 @@ class FirebaseManager {
     let auth = Auth.auth()
     var allTransactions: [Transaction] = []
     
-    
     private func configueFB() -> Firestore {
         var db: Firestore!
         let settings = FirestoreSettings()
@@ -94,18 +93,24 @@ class FirebaseManager {
         }
     }
     
-    //MARK: Logout
-    
-    public func Logout(completion: @escaping (Error?) -> ()) {
+    //MARK: - Logout
+//    public func Logout(completion: @escaping (Error?) -> ()) {
+//        do {
+//            try Auth.auth().signOut()
+//            completion(nil)
+//        } catch let error {
+//            completion(error)
+//        }
+//    }
+    public func logout(completion: @escaping (Result<(), Error>) -> ()) {
         do {
             try Auth.auth().signOut()
-            completion(nil)
+            completion(.success(()))
         } catch let error {
-            completion(error)
+            completion(.failure(error))
         }
     }
-    
-    
+
     
     // MARK: - Transactions
     
@@ -151,8 +156,7 @@ class FirebaseManager {
                             let timestamp = document.data()["date"] as? Timestamp
                             let date = timestamp?.dateValue()
                             
-                            let typeString = document.data()["type"] as? String ?? "" // Получаем строку с типом транзакции из Firestore
-                            // Преобразуем строку в тип TransactionType
+                            let typeString = document.data()["type"] as? String ?? ""
                             let transactionType: TransactionType = typeString == "income" ? .income : .expense
                             
                             let transaction = Transaction(
@@ -178,10 +182,10 @@ class FirebaseManager {
         
         userDocRef.updateData(["balance": newBalance]) { error in
             if let error = error {
-                print("Ошибка при обновлении баланса: \(error.localizedDescription)")
+                print("Error updating balance: \(error.localizedDescription)")
                 completion(ResponseCode(code: 0))
             } else {
-                print("Баланс успешно обновлен в Firestore")
+                print("Balance successfully updated in Firestore")
                 completion(ResponseCode(code: 1))
             }
         }
