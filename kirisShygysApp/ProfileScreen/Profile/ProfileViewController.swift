@@ -84,9 +84,11 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     @objc private func editButtonTapped() {
-        print("editButtonTapped")
+        let editVC = EditViewController()
+           navigationController?.pushViewController(editVC, animated: true)
     }
     
+   
     func showSettings() {
         let settingsViewController = SettingsViewController()
         settingsViewController.hidesBottomBarWhenPushed = true
@@ -117,13 +119,13 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     
     private func setupConstraints() {
         avatarImage.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(80)
+            make.top.equalToSuperview().offset(120)
             make.leading.equalToSuperview().offset(40)
             make.width.height.equalTo(75)
         }
         
         usernameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(80)
+            make.top.equalToSuperview().offset(120)
             make.leading.equalTo(avatarImage.snp.trailing).offset(20)
         }
         
@@ -133,7 +135,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         }
         
         editButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(80)
+            make.top.equalToSuperview().offset(120)
             make.trailing.equalToSuperview().offset(-30)
         }
         

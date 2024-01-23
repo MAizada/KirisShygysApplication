@@ -29,4 +29,10 @@ final class ProfilePresenter: ProfilePresenterProtocol {
             print("Logout failed with error: \(error.localizedDescription)")
         }
     }
+    
+    func editButtonTapped() {
+          
+         
+       }
+
 }
