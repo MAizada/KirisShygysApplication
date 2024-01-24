@@ -6,3 +6,14 @@
 //
 
 import Foundation
+import UIKit
+
+protocol EditViewProtocol: AnyObject {
+    func updateProfileInfo(name: String, avatar: UIImage?)
+}
+
+protocol EditPresenterProtocol {
+    func saveChanges(name: String, avatar: UIImage?)
+}
+  
+

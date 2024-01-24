@@ -85,10 +85,9 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     
     @objc private func editButtonTapped() {
         let editVC = EditViewController()
-           navigationController?.pushViewController(editVC, animated: true)
+        navigationController?.pushViewController(editVC, animated: true)
     }
     
-   
     func showSettings() {
         let settingsViewController = SettingsViewController()
         settingsViewController.hidesBottomBarWhenPushed = true
