@@ -5,15 +5,12 @@
 //  Created by Aizada on 23.01.2024.
 //
 
-import Foundation
 import UIKit
 
-protocol EditViewProtocol: AnyObject {
-    func updateProfileInfo(name: String, avatar: UIImage?)
-}
-
-protocol EditPresenterProtocol {
-    func saveChanges(name: String, avatar: UIImage?)
-}
-  
-
+//protocol EditViewProtocol: AnyObject {
+//
+//}
+//
+//protocol EditPresenterProtocol {
+//    func saveChanges(name: String, avatar: UIImage?, completion: @escaping (String, UIImage?) -> Void)
+//}

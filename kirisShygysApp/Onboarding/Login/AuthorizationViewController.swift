@@ -229,8 +229,8 @@ final class AuthorizationViewController: UIViewController, AuthorizationViewProt
 }
 
 extension AuthorizationViewController: AuthorizationPresenterDelegate {
-    func didAuthorizeSuccessfully() {
-        let mainVC = MainTabBarController()
+    func didAuthorizeSuccessfully(userImage: UIImage?) {
+        let mainVC = MainTabBarController(userImage: userImage)
         navigationController?.setViewControllers([mainVC], animated: true)
     }
     

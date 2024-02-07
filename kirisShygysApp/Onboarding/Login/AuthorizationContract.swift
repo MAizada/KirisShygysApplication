@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol AuthorizationViewProtocol: AnyObject {
     func getEmailTextFieldValue() -> String?
@@ -20,6 +21,6 @@ protocol AuthorizationPresenterProtocol: AnyObject {
 }
 
 protocol AuthorizationPresenterDelegate: AnyObject {
-    func didAuthorizeSuccessfully()
+    func didAuthorizeSuccessfully(userImage: UIImage?)
     func didFailToAuthorize()
 }

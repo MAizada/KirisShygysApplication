@@ -16,8 +16,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     private lazy var avatarImage: UIImageView = {
         let image =  UIImageView()
         image.image = UIImage(systemName: "person")
-        image.contentMode = .left
-        image.layer.cornerRadius = 25
+        image.contentMode = .scaleAspectFill
         return image
     }()
     
@@ -83,9 +82,30 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: "SettingsCell")
     }
     
+    func updateProfileInfo(name: String, avatar: UIImage?) {
+        additionalInfoLabel.text = name
+        avatarImage.image = avatar
+        
+        avatarImage.contentMode = .scaleAspectFill
+        avatarImage.layer.cornerRadius = avatarImage.frame.size.width / 2
+        avatarImage.clipsToBounds = true
+        
+        if let imageData = avatar?.jpegData(compressionQuality: 1.0) {
+            UserDefaults.standard.set(imageData, forKey: "userAvatar")
+            print("Image saved to UserDefaults")
+        } else {
+            print("Failed to convert image to data")
+        }
+    }
+    
     @objc private func editButtonTapped() {
-        let editVC = EditViewController()
-        navigationController?.pushViewController(editVC, animated: true)
+        let editVC = EditViewController(presenter: self.presenter!)
+        editVC.onSave = { [weak self] name, avatar in
+            self?.updateProfileInfo(name: name, avatar: avatar)
+        }
+        
+        let navController = UINavigationController(rootViewController: editVC)
+        present(navController, animated: true, completion: nil)
     }
     
     func showSettings() {
@@ -98,7 +118,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         let alertController = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
             self?.presenter?.logout(completion: { result in
-            self?.presenter?.handleLogoutResult(result: result)
+                self?.presenter?.handleLogoutResult(result: result)
             })
         }
         let cancelAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
@@ -120,7 +140,8 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         avatarImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(120)
             make.leading.equalToSuperview().offset(40)
-            make.width.height.equalTo(75)
+            make.width.equalTo(50)
+            make.height.equalTo(50)
         }
         
         usernameLabel.snp.makeConstraints { make in
@@ -144,7 +165,6 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             make.trailing.equalToSuperview().offset(-10)
             make.height.equalTo(90)
         }
-        
     }
     
     // MARK: - UITableViewDataSource
@@ -171,4 +191,3 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
 }
-

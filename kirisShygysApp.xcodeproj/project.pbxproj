@@ -54,8 +54,6 @@
 		2E6DD6B62B1E42080088434A /* FinancialReportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6DD6B52B1E42070088434A /* FinancialReportPresenter.swift */; };
 		2E6DD6B82B1E423C0088434A /* FinancialReportContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6DD6B72B1E423C0088434A /* FinancialReportContract.swift */; };
 		2E727B932B602531006D03D3 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E727B922B602531006D03D3 /* EditViewController.swift */; };
-		2E727B952B60254D006D03D3 /* EditPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E727B942B60254D006D03D3 /* EditPresenter.swift */; };
-		2E727B972B60255C006D03D3 /* EditContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E727B962B60255C006D03D3 /* EditContract.swift */; };
 		2E7708ED2B1F208900868CB6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7708EC2B1F208900868CB6 /* SettingsViewController.swift */; };
 		2E7B41392B2717B000E9D07A /* CurrencyContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7B41382B2717B000E9D07A /* CurrencyContract.swift */; };
 		2E7B413B2B2717BE00E9D07A /* CurrencyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7B413A2B2717BE00E9D07A /* CurrencyPresenter.swift */; };
@@ -132,8 +130,6 @@
 		2E6DD6B52B1E42070088434A /* FinancialReportPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialReportPresenter.swift; sourceTree = "<group>"; };
 		2E6DD6B72B1E423C0088434A /* FinancialReportContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialReportContract.swift; sourceTree = "<group>"; };
 		2E727B922B602531006D03D3 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
-		2E727B942B60254D006D03D3 /* EditPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPresenter.swift; sourceTree = "<group>"; };
-		2E727B962B60255C006D03D3 /* EditContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContract.swift; sourceTree = "<group>"; };
 		2E7708EC2B1F208900868CB6 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		2E7B41382B2717B000E9D07A /* CurrencyContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyContract.swift; sourceTree = "<group>"; };
 		2E7B413A2B2717BE00E9D07A /* CurrencyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPresenter.swift; sourceTree = "<group>"; };
@@ -252,8 +248,6 @@
 			isa = PBXGroup;
 			children = (
 				2E727B922B602531006D03D3 /* EditViewController.swift */,
-				2E727B942B60254D006D03D3 /* EditPresenter.swift */,
-				2E727B962B60255C006D03D3 /* EditContract.swift */,
 			);
 			path = EditScreen;
 			sourceTree = "<group>";
@@ -342,8 +336,8 @@
 			isa = PBXGroup;
 			children = (
 				2E7708EA2B1F205C00868CB6 /* Profile */,
-				2E7708EB2B1F206C00868CB6 /* Settings */,
 				2E727B912B6024F8006D03D3 /* EditScreen */,
+				2E7708EB2B1F206C00868CB6 /* Settings */,
 			);
 			path = ProfileScreen;
 			sourceTree = "<group>";
@@ -529,7 +523,6 @@
 				2E4957E12B235112004BE02B /* SettingsTableViewCell.swift in Sources */,
 				2E3DCEB62AD1D5F400BFDC19 /* IncomeView.swift in Sources */,
 				2E3DCEBC2AD8459D00BFDC19 /* ProfileTableViewCell.swift in Sources */,
-				2E727B952B60254D006D03D3 /* EditPresenter.swift in Sources */,
 				266835462A9FA598004C6ADD /* ForgotPasswordViewController.swift in Sources */,
 				2E548B7F2AA4EE71008635FF /* IncomeViewController.swift in Sources */,
 				2E548B792AA4EE45008635FF /* TransactionViewController.swift in Sources */,
@@ -578,7 +571,6 @@
 				2E3DCEF22ADDA8A600BFDC19 /* HomePresenter.swift in Sources */,
 				2E3DCF102ADDB01200BFDC19 /* IncomeContract.swift in Sources */,
 				2E3DCF142ADDB03A00BFDC19 /* ExpenseContract.swift in Sources */,
-				2E727B972B60255C006D03D3 /* EditContract.swift in Sources */,
 				2E7708ED2B1F208900868CB6 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

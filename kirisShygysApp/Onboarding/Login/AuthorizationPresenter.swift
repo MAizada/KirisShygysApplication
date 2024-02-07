@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class AuthorizationPresenter: AuthorizationPresenterProtocol {
     
@@ -32,7 +33,8 @@ class AuthorizationPresenter: AuthorizationPresenterProtocol {
                 switch response {
                 case .success:
                     self.userDefault.set(true, forKey: "isLogin")
-                    self.delegate?.didAuthorizeSuccessfully()
+                    let userImage = UIImage(named: "userImage")
+                    self.delegate?.didAuthorizeSuccessfully(userImage: userImage)
                 case .noVerify, .error:
                     self.delegate?.didFailToAuthorize()
                     self.view?.showErrorMessage("Failed to authorize")

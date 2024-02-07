@@ -30,9 +30,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         }
     }
     
-    func editButtonTapped() {
-          
-         
-       }
-
+    func updateProfileInfo(name: String, avatar: UIImage?) {
+        view?.updateProfileInfo(name: name, avatar: avatar)
+    }
 }

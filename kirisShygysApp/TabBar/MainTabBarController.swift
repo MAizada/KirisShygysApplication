@@ -16,6 +16,17 @@ final class MainTabBarController: UITabBarController {
         selectedIndex = 0
     }
     
+    let userImage: UIImage?
+
+        init(userImage: UIImage?) {
+            self.userImage = userImage
+            super.init(nibName: nil, bundle: nil)
+        }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func generateTabBar() {
         let customTabBar = CustomTabBar()
         setValue(customTabBar, forKey: "tabBar")

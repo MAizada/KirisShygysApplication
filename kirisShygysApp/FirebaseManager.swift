@@ -94,14 +94,6 @@ class FirebaseManager {
     }
     
     //MARK: - Logout
-//    public func Logout(completion: @escaping (Error?) -> ()) {
-//        do {
-//            try Auth.auth().signOut()
-//            completion(nil)
-//        } catch let error {
-//            completion(error)
-//        }
-//    }
     public func logout(completion: @escaping (Result<(), Error>) -> ()) {
         do {
             try Auth.auth().signOut()
@@ -110,7 +102,6 @@ class FirebaseManager {
             completion(.failure(error))
         }
     }
-
     
     // MARK: - Transactions
     
